@@ -1,0 +1,11 @@
+[
+  { "cp": "1F389", "name": "party popper", "cat": "Activities", "kw": ["party","celebrate","confetti"] },
+  { "cp": "1F680", "name": "rocket", "cat": "Travel", "kw": ["launch","space","fast"] },
+  { "cp": "1F60E", "name": "smiling face with sunglasses", "cat": "Smileys", "kw": ["cool","chill","confident"] },
+  { "cp": "1F36A", "name": "cookie", "cat": "Food", "kw": ["sweet","snack"] },
+  { "cp": "1F40D", "name": "snake", "cat": "Animals", "kw": ["sneaky","s-curve"] },
+  { "cp": "1F9E1", "name": "orange heart", "cat": "Symbols", "kw": ["warm","love"] },
+  { "cp": "1F4A5", "name": "collision", "cat": "Activities", "kw": ["boom","impact"] },
+  { "cp": "1F4A1", "name": "light bulb", "cat": "Objects", "kw": ["idea","bright"] },
+  { "cp": "1F951", "name": "avocado", "cat": "Food", "kw": ["green","soft"] }
+]

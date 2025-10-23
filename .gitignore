@@ -1,0 +1,92 @@
+# EmojiFusion - Multi-Computer Development Setup
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Build outputs
+dist/
+build/
+.vercel/
+.output/
+
+# Cache
+.cache/
+.vite/
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime
+*.pid
+*.seed
+*.pid.lock
+
+# API keys (extra protection)
+*api*key*
+*secret*
+*token*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Python virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Screenshots from automated tests
+screenshots/*.png
+screenshots/*.jpg
+!screenshots/.gitkeep
+
+# Test outputs and reports
+test_results/
+*.json.test
+*-demo-*.json
+ui-analysis-report-*.json
+emojifusion-elite-demo-*.json
+
+# Temporary files
+*.tmp
+*.temp
+
+# Contact form submissions (contains user data)
+contact-submissions/
+
+# claude-agent-runtime (managed separately)
+# Option 1: If using as submodule, uncomment:
+# claude-agent-runtime/
+# Option 2: If committing directly, keep commented
+.vercel
+nul

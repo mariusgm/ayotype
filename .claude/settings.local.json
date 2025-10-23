@@ -1,0 +1,52 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/git_marius/**)",
+      "Bash(npm run dev:*)",
+      "Bash(dir:*)",
+      "Bash(where:*)",
+      "Bash(winget search:*)",
+      "Bash(python:*)",
+      "Bash(node:*)",
+      "Bash(git add:*)",
+      "Bash(npm run init)",
+      "Bash(bash ./.claude/hooks/session-init.sh)",
+      "Bash(pip show playwright)",
+      "Bash(npm install)",
+      "Bash(curl -s http://127.0.0.1:3000)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":3000\")",
+      "Bash(npm run dev:ui)",
+      "Bash(npm run dev:api)",
+      "Bash(npm run clean)",
+      "Bash(curl -s http://127.0.0.1:3001/api/status)",
+      "Bash(curl -X POST http://127.0.0.1:3001/api/generate -H \"Content-Type: application/json\" -d \"{\"\"words\"\":\"\"test\"\",\"\"mode\"\":\"\"emoji\"\",\"\"tone\"\":\"\"fun\"\"}\")",
+      "Bash(findstr \"LISTENING\")",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd Claude Agent Runtime verification and automated browser testing tools\n\nIntegrates reusable Claude Agent Runtime for comprehensive browser automation and console diagnostics. Enables iterative testing workflow to verify UI functionality and detect console errors after any code change. Includes verification scripts for localhost and production endpoints.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git log -1 --format='%an %ae')",
+      "Bash(git push)",
+      "Bash(git ls-tree -r HEAD --name-only)",
+      "Bash(od -c C:/git_marius/emojifusion/index.html)",
+      "Bash(npm --version)",
+      "WebFetch(domain:ayotype.com)",
+      "Bash(curl:*)",
+      "Bash(vercel ls:*)",
+      "Bash(lsof:*)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "(commit|git add|create.*commit|push|pull request|pr)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo ⚠️ REMINDER: Before committing you should: 1. Test UI in browser at http://127.0.0.1:3000, 2. Check browser console logs for errors, 3. Verify all features work correctly, 4. Fix any issues found. Only proceed after testing is complete and all issues are resolved. && exit 0"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="manifest" href="/manifest.webmanifest">
+    <title>EmojiFusion — Ayotype</title>
+    <style>
+      /* Minimal font stack without external fetch */
+      :root{--bg:#0a0a0a;--card:#121212;--fg:#f7f7f5;--muted:#b6b6b1;--accent1:#FF79C6;--accent2:#FFD94E;}
+      html,body,#root{height:100%}
+      body{margin:0;background:radial-gradient(1200px 800px at 20% -10%, #171717, #0a0a0a);}
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      // PWA registration (no await)
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(()=>{});
+      }
+    </script>
+    <link rel="stylesheet" href="src/app.css">
+    <link rel="preload" href="/src/emoji-meta.json" as="fetch" crossorigin="anonymous">
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

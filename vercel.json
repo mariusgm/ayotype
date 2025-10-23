@@ -1,0 +1,58 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": null,
+  "installCommand": "npm install",
+  "rewrites": [
+    {
+      "source": "/api/generate",
+      "destination": "/apps/emojifusion/api/generate.ts",
+      "has": [
+        {
+          "type": "host",
+          "value": "emojifusion.ayotype.com"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/dist/emojifusion/$1",
+      "has": [
+        {
+          "type": "host",
+          "value": "emojifusion.ayotype.com"
+        }
+      ]
+    },
+    {
+      "source": "/contact",
+      "destination": "/dist/landing/contact.html"
+    },
+    {
+      "source": "/blog/(.*)",
+      "destination": "/apps/landing/blog/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/dist/landing/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "interest-cohort=()" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    }
+  ]
+}

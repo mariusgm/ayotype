@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combo Archive - EmojiFusion by Ayotype</title>
+  <meta name="description" content="Browse our complete archive of daily emoji and ASCII art combinations">
+  <link rel="canonical" href="https://emojifusion.ayotype.com/combo-archive.html">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: radial-gradient(ellipse at top, hsl(0, 0%, 9%) 0%, #0a0a0a 50%);
+      color: #f7f7f5;
+      min-height: 100vh;
+      padding: 24px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ffb6c1, #ffe2a0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      color: #b6b6b1;
+      font-size: 1.1rem;
+    }
+
+    .filters {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .filter-btn {
+      padding: 8px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      color: #f7f7f5;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #FF79C6;
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #FF79C6, #FFD94E);
+      color: #0a0a0a;
+      border-color: transparent;
+    }
+
+    .search-box {
+      max-width: 500px;
+      margin: 0 auto 32px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: #f7f7f5;
+      font-size: 16px;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #FF79C6;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .stats {
+      text-align: center;
+      color: #9a9a96;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .combo-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .combo-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #FF79C6;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(255, 100, 200, 0.2);
+    }
+
+    .combo-date {
+      color: #666;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .combo-display {
+      font-size: 3rem;
+      text-align: center;
+      margin: 16px 0;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .combo-theme {
+      color: #b6b6b1;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .combo-description {
+      color: #9a9a96;
+      font-size: 14px;
+    }
+
+    .tone-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: #9a9a96;
+    }
+
+    .error {
+      text-align: center;
+      padding: 60px 20px;
+      color: #ff6b6b;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #9a9a96;
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #666;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #FF79C6;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>✨ Combo Archive</h1>
+    <p class="subtitle">Browse our complete collection of daily combos</p>
+  </header>
+
+  <div class="search-box">
+    <input
+      type="text"
+      class="search-input"
+      id="search-input"
+      placeholder="Search combos..."
+      aria-label="Search combos"
+    >
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-tone="all">All</button>
+    <button class="filter-btn" data-tone="cute">🐣 Cute</button>
+    <button class="filter-btn" data-tone="cool">😎 Cool</button>
+    <button class="filter-btn" data-tone="chaotic">⚡ Chaotic</button>
+    <button class="filter-btn" data-tone="romantic">💕 Romantic</button>
+    <button class="filter-btn" data-tone="minimal">◽ Minimal</button>
+    <button class="filter-btn" data-tone="nostalgic">🌙 Nostalgic</button>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="grid" id="combo-grid">
+    <div class="loading">Loading combos...</div>
+  </div>
+
+  <footer>
+    <p>
+      Made with ✨ by <a href="https://ayotype.com" target="_blank">Ayotype</a> ·
+      <a href="https://emojifusion.ayotype.com">Try EmojiFusion</a> ·
+      <a href="/api/combo-of-the-day/rss">RSS Feed</a>
+    </p>
+  </footer>
+</div>
+
+<script>
+(function() {
+  const API_URL = '/api/combo-of-the-day/archive';
+  const grid = document.getElementById('combo-grid');
+  const searchInput = document.getElementById('search-input');
+  const filtersContainer = document.getElementById('filters');
+  const statsEl = document.getElementById('stats');
+
+  let allCombos = [];
+  let filteredCombos = [];
+  let currentTone = 'all';
+
+  // Tone emoji mapping
+  const toneEmojis = {
+    cute: '🐣',
+    cool: '😎',
+    chaotic: '⚡',
+    romantic: '💕',
+    minimal: '◽',
+    nostalgic: '🌙'
+  };
+
+  // Format date
+  function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  }
+
+  // Render combo card
+  function renderCard(combo) {
+    const toneEmoji = toneEmojis[combo.tone] || '✨';
+
+    return `
+      <div class="combo-card" data-combo-id="${combo.date}">
+        <div class="combo-date">${formatDate(combo.date)}</div>
+        <div class="combo-display">${combo.combo}</div>
+        <div class="combo-theme">${combo.theme} ${toneEmoji}</div>
+        <div class="combo-description">${combo.description}</div>
+        <span class="tone-badge">${combo.tone}</span>
+      </div>
+    `;
+  }
+
+  // Render all combos
+  function renderCombos(combos) {
+    if (combos.length === 0) {
+      grid.innerHTML = '<div class="empty-state">No combos found matching your criteria</div>';
+      return;
+    }
+
+    grid.innerHTML = combos.map(renderCard).join('');
+    updateStats(combos);
+  }
+
+  // Update stats
+  function updateStats(combos) {
+    statsEl.textContent = `Showing ${combos.length} of ${allCombos.length} combos`;
+  }
+
+  // Filter by tone
+  function filterByTone(tone) {
+    currentTone = tone;
+    applyFilters();
+  }
+
+  // Search combos
+  function searchCombos(query) {
+    applyFilters(query);
+  }
+
+  // Apply all filters
+  function applyFilters(searchQuery = '') {
+    let results = allCombos;
+
+    // Filter by tone
+    if (currentTone !== 'all') {
+      results = results.filter(c => c.tone === currentTone);
+    }
+
+    // Filter by search query
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      results = results.filter(c =>
+        c.combo.toLowerCase().includes(q) ||
+        c.theme.toLowerCase().includes(q) ||
+        c.description.toLowerCase().includes(q) ||
+        c.name.toLowerCase().includes(q)
+      );
+    }
+
+    filteredCombos = results;
+    renderCombos(results);
+  }
+
+  // Load combos from API
+  async function loadCombos() {
+    try {
+      const response = await fetch(API_URL);
+      if (!response.ok) throw new Error('Failed to fetch');
+
+      allCombos = await response.json();
+      filteredCombos = allCombos;
+      renderCombos(allCombos);
+    } catch (error) {
+      console.error('Error loading combos:', error);
+      grid.innerHTML = '<div class="error">Failed to load combos. Please try again later.</div>';
+    }
+  }
+
+  // Set up event listeners
+  function setupEventListeners() {
+    // Filter buttons
+    filtersContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('filter-btn')) {
+        // Update active state
+        document.querySelectorAll('.filter-btn').forEach(btn =>
+          btn.classList.remove('active')
+        );
+        e.target.classList.add('active');
+
+        // Apply filter
+        const tone = e.target.dataset.tone;
+        filterByTone(tone);
+      }
+    });
+
+    // Search input
+    let searchTimeout;
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        searchCombos(e.target.value);
+      }, 300);
+    });
+
+    // Card click
+    grid.addEventListener('click', (e) => {
+      const card = e.target.closest('.combo-card');
+      if (card) {
+        const comboId = card.dataset.comboId;
+        const combo = allCombos.find(c => c.date === comboId);
+        if (combo) {
+          // Copy combo to clipboard
+          navigator.clipboard.writeText(combo.combo).then(() => {
+            card.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+              card.style.transform = '';
+            }, 200);
+          });
+        }
+      }
+    });
+  }
+
+  // Initialize
+  function init() {
+    setupEventListeners();
+    loadCombos();
+  }
+
+  // Auto-init when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+</body>
+</html>

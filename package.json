@@ -1,0 +1,71 @@
+{
+  "name": "ayotype",
+  "private": true,
+  "version": "3.0.0",
+  "description": "AyoType - Creative digital tools platform (monorepo)",
+  "type": "module",
+  "scripts": {
+    "dev": "kill-port 3000 3001 3002 3003 && npm run dev:api & npm run dev:ui",
+    "dev:ui": "vite --config vite.config.ts",
+    "dev:api": "node real-api-server.cjs",
+    "dev:api:mock": "node local-api-server.cjs",
+    "dev:landing": "vite --config vite.config.ts --open /apps/landing/index.html",
+    "dev:emojifusion": "vite --config vite.config.ts --open /apps/emojifusion/index.html",
+    "build": "vite build --config vite.config.ts && node scripts/pwa-hint.js || true",
+    "build:landing": "vite build --config vite.config.ts --mode landing",
+    "build:emojifusion": "vite build --config vite.config.ts --mode emojifusion",
+    "preview": "vite preview",
+    "clean": "kill-port 3000 3001 3002 3003",
+    "typecheck": "npx tsc --noEmit",
+    "lint": "echo 'No linter configured - consider adding ESLint'",
+    "test": "echo 'No tests configured - consider adding testing framework'",
+    "test:api": "curl -X POST http://127.0.0.1:3000/api/generate -H 'Content-Type: application/json' -d '{\"words\": \"test\", \"mode\": \"both\", \"tone\": \"cute\"}' -s | jq -r '.emoji[0].combo'",
+    "test:browser": "open -a 'Google Chrome' --args --new-window --auto-open-devtools-for-tabs 'http://127.0.0.1:3000/apps/emojifusion/index.html'",
+    "doctor": "node doctor.js || echo 'Doctor script not found'",
+    "init": "./.claude/hooks/session-init.sh || echo 'Session init not found'"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "dependencies": {
+    "@sendgrid/mail": "^8.1.6",
+    "dotenv": "^17.2.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "resend": "^6.1.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "kill-port": "^2.0.1",
+    "playwright": "^1.40.0",
+    "rollup": "^4.18.0",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.3"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.18.0",
+    "@rollup/rollup-win32-x64-msvc": "^4.52.5"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariusgm/ayotype.git"
+  },
+  "keywords": [
+    "ayotype",
+    "emojifusion",
+    "emoji",
+    "ascii",
+    "creative-tools",
+    "digital-tools",
+    "monorepo"
+  ],
+  "author": "Marius Mevold",
+  "license": "MIT"
+}

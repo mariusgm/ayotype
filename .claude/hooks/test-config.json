@@ -1,0 +1,10 @@
+{
+  "endpoints": [
+    {"name": "Main Page", "url": "/", "method": "GET"},
+    {"name": "API Generate", "url": "/api/generate", "method": "POST", "body": {"words": "test", "mode": "emoji"}}
+  ],
+  "security_checks": true,
+  "performance_monitoring": true,
+  "console_monitoring": true,
+  "screenshot_capture": true
+}
