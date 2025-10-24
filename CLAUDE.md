@@ -1,5 +1,28 @@
 # EmojiFusion Project Knowledge
 
+## ⚠️ MANDATORY: Browser Testing Before Deployment
+
+**CRITICAL RULE: ALWAYS test changes in a real browser before deploying to production!**
+
+Before ANY deployment or commit, you MUST:
+1. Start dev servers: `npm run dev:api` and `npm run dev:ui`
+2. Open browser to: `http://127.0.0.1:3000/apps/emojifusion/index.html` (or relevant page)
+3. Test ALL affected features manually
+4. Check browser console for errors (F12 → Console tab)
+5. Verify forms submit correctly
+6. Test user interactions (clicks, inputs, navigation)
+7. Fix ALL issues before proceeding
+
+**Why this matters:**
+- API tests don't catch frontend issues
+- JSON parsing errors only show in browser
+- Form submissions need real browser testing
+- Console errors indicate broken functionality
+
+**No exceptions - headless testing is NOT sufficient!**
+
+---
+
 ## Development Server Commands
 
 ### Important: Avoiding Timeouts
