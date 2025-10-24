@@ -19,11 +19,15 @@
       "destination": "/apps/landing/contact.html"
     },
     {
+      "source": "/combo-archive",
+      "destination": "/apps/landing/combo-archive.html"
+    },
+    {
       "source": "/blog/(.*)",
       "destination": "/apps/landing/blog/$1"
     },
     {
-      "source": "/((?!ads\\.txt$).*)",
+      "source": "/((?!ads\\.txt$|embed-widget\\.js$).*)",
       "destination": "/apps/landing/$1"
     }
   ],
