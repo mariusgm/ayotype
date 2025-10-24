@@ -18,14 +18,14 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module">
-      // PWA registration (no await)
+    <!-- Service worker disabled for local development -->
+    <!-- <script type="module">
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(()=>{});
       }
-    </script>
-    <link rel="stylesheet" href="src/app.css">
-    <link rel="preload" href="/src/emoji-meta.json" as="fetch" crossorigin="anonymous">
-    <script type="module" src="/src/main.tsx"></script>
+    </script> -->
+    <link rel="stylesheet" href="./src/app.css">
+    <link rel="preload" href="./src/emoji-meta.json" as="fetch" crossorigin="anonymous">
+    <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>

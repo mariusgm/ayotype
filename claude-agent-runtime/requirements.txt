@@ -1,0 +1,8 @@
+# Claude Agent Runtime Dependencies
+# Python 3.8+
+
+# Browser automation
+playwright>=1.40.0
+
+# Optional: Additional utilities
+python-dotenv>=1.0.0
