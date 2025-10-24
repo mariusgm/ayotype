@@ -1,20 +1,22 @@
-# EmojiFusion Project Knowledge
+# AyoType Project Knowledge
 
 ## ⚠️ MANDATORY: Browser Testing Before Deployment
 
-**CRITICAL RULE: ALWAYS test changes in a real browser before deploying to production!**
+**CRITICAL RULE: ALWAYS test changes in a real browser after making changes to functionality using endpoints. Always test all endpoints before deploying to production!**
 
 Before ANY deployment or commit, you MUST:
 1. Start dev servers: `npm run dev:api` and `npm run dev:ui`
 2. Open browser to: `http://127.0.0.1:3000/apps/emojifusion/index.html` (or relevant page)
 3. Test ALL affected features manually
-4. Check browser console for errors (F12 → Console tab)
-5. Verify forms submit correctly
-6. Test user interactions (clicks, inputs, navigation)
-7. Fix ALL issues before proceeding
+4. Test ALL API endpoints with curl or browser dev tools
+5. Check browser console for errors (F12 → Console tab)
+6. Verify forms submit correctly
+7. Test user interactions (clicks, inputs, navigation)
+8. Fix ALL issues before proceeding
 
 **Why this matters:**
 - API tests don't catch frontend issues
+- Endpoint changes can break functionality silently
 - JSON parsing errors only show in browser
 - Form submissions need real browser testing
 - Console errors indicate broken functionality
@@ -62,22 +64,46 @@ pkill -f "vite"
 pkill -f "local-api-server"
 ```
 
-### Testing Generation
+### Testing Endpoints
 
-1. **Direct API test**: `curl -X POST http://127.0.0.1:3001/api/generate -H "Content-Type: application/json" -d '{"words": "test", "mode": "both", "tone": "cute", "lines": 1}'`
+**1. EmojiFusion Generation API**
+- **Direct API test**: `curl -X POST http://127.0.0.1:3001/api/generate -H "Content-Type: application/json" -d '{"words": "test", "mode": "both", "tone": "cute", "lines": 1}'`
+- **Proxied API test** (through Vite): `curl -X POST http://127.0.0.1:3000/api/generate -H "Content-Type: application/json" -d '{"words": "test", "mode": "both", "tone": "cute", "lines": 1}'`
+- **Production test**: `curl -X POST https://emojifusion.ayotype.com/api/generate -H "Content-Type: application/json" -d '{"words": "test", "mode": "both", "tone": "cute", "lines": 1}'`
 
-2. **Proxied API test** (through Vite): `curl -X POST http://127.0.0.1:3000/api/generate -H "Content-Type: application/json" -d '{"words": "test", "mode": "both", "tone": "cute", "lines": 1}'`
+**2. Contact Form API**
+- **Production test**: `curl -X POST https://ayotype.com/api/contact -H "Content-Type: application/json" -d '{"name":"Test User","email":"test@example.com","message":"Test message"}'`
 
-3. **Use the test script**: `bash test_generation.sh`
+**3. Static Files**
+- **ads.txt**: `curl https://ayotype.com/ads.txt`
 
 ### Architecture Notes
 
+**Monorepo Structure:**
+- `apps/landing/` - Landing page and contact form
+- `apps/emojifusion/` - EmojiFusion app
+- `api/` - Serverless API functions (generate, contact)
+- `public/` - Static files served at root (ads.txt, robots.txt, etc.)
+- `dist/` - Build output directory
+
+**Development:**
 - **Frontend** (Vite): Runs on port 3000
 - **API Server**: Runs on port 3001
 - **Proxy**: Vite proxies `/api/*` requests to port 3001 (configured in `vite.config.ts`)
 - **Local Development**: Uses real Groq API via `real-api-server.cjs` *(UPDATED 2025-10-20)*
 - **Mock Development**: `npm run dev:api:mock` for testing without API calls
-- **Production**: Uses the edge function in `api/generate.ts`
+
+**Production (Vercel):**
+- **Output Directory**: `dist/` - Vite builds to this directory
+- **Public Files**: Files in `public/` are copied to `dist/` root during build
+- **Static File Serving**: Vercel serves files from `dist/` at root URL
+- **API Functions**: Serverless functions in `api/` directory
+  - `api/generate.ts` - EmojiFusion generation (Gemini 1.5 Pro / Groq Llama 3.3 70B)
+  - `api/contact.ts` - Contact form email delivery (Resend)
+- **Routing**: `vercel.json` configures domain routing and rewrites
+  - Main domain (ayotype.com) → `apps/landing/`
+  - Subdomain (emojifusion.ayotype.com) → `apps/emojifusion/`
+  - Static files (ads.txt) excluded from catch-all rewrites
 
 ### Browser Testing (REQUIRED after changes)
 
@@ -151,7 +177,14 @@ npm run init
    - Integrated Resend API for email delivery (replaced SendGrid)
    - Status: ⏳ Pending domain verification
 
-5. **Bug Fixes**
+5. **Google AdSense ads.txt Implementation**
+   - Created ads.txt file with publisher ID: pub-9365314553407219
+   - Placed in `public/` directory for Vite to copy to dist root
+   - Modified `vercel.json` to exclude ads.txt from catch-all rewrites
+   - Enabled Vite `publicDir` option to copy static files
+   - Status: ✅ Working - accessible at https://ayotype.com/ads.txt
+
+6. **Bug Fixes**
    - Fixed JSON parsing error in contact form (404 → proper endpoint)
    - Fixed API JSON parsing (removed problematic stop sequences)
    - Added proper error handling and logging
@@ -190,6 +223,7 @@ Production (Vercel):
 - Added mandatory browser testing section to docs
 - Headless API tests don't catch frontend issues
 - JSON parsing errors only show in browser console
+- Always test all endpoints before deploying to production
 
 **2. Email Service Considerations**
 - SendGrid: Hit quota limits (100 emails/day on free tier)
@@ -201,6 +235,13 @@ Production (Vercel):
 - Use proper error handling (don't silently swallow errors)
 - Return actual errors to user for debugging
 
+**4. Static File Serving on Vercel with Vite**
+- Place static files (ads.txt, robots.txt) in `public/` directory at project root
+- Enable `publicDir: 'public'` in `vite.config.ts` to copy files to `dist/`
+- Vercel serves files from the `outputDirectory` (dist/) at root URL
+- Use negative lookahead regex in rewrites to exclude static files: `/((?!ads\\.txt$).*)`
+- Static files must be in build output to be served in production
+
 ### 🚀 Production URLs
 
 - Landing: https://ayotype.com
@@ -208,6 +249,7 @@ Production (Vercel):
 - Contact Form: https://ayotype.com/contact
 - API Generate: https://emojifusion.ayotype.com/api/generate
 - API Contact: https://ayotype.com/api/contact
+- ads.txt: https://ayotype.com/ads.txt
 
 ---
 
