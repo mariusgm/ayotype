@@ -5,16 +5,6 @@
   "installCommand": "npm install",
   "rewrites": [
     {
-      "source": "/api/generate",
-      "destination": "/apps/emojifusion/api/generate.ts",
-      "has": [
-        {
-          "type": "host",
-          "value": "emojifusion.ayotype.com"
-        }
-      ]
-    },
-    {
       "source": "/(.*)",
       "destination": "/apps/emojifusion/$1",
       "has": [
