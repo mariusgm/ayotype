@@ -9,6 +9,45 @@
     <meta name="theme-color" content="#0a0a0a" />
     <link rel="manifest" href="/manifest.webmanifest">
     <title>EmojiFusion — Ayotype</title>
+
+    <!-- Google Analytics (gtag.js) with Consent Mode -->
+    <script>
+      // Initialize gtag consent mode (default: denied)
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-RWETGB9C39');
+
+      // Update consent based on user preference
+      (function() {
+        try {
+          const consent = localStorage.getItem('ayotype_ad_consent');
+          if (consent) {
+            const prefs = JSON.parse(consent);
+            if (prefs.analytics) {
+              gtag('consent', 'update', {
+                'analytics_storage': 'granted'
+              });
+            }
+            if (prefs.advertising) {
+              gtag('consent', 'update', {
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted'
+              });
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RWETGB9C39"></script>
+
     <style>
       /* Minimal font stack without external fetch */
       :root{--bg:#0a0a0a;--card:#121212;--fg:#f7f7f5;--muted:#b6b6b1;--accent1:#FF79C6;--accent2:#FFD94E;}
