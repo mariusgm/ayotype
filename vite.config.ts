@@ -34,6 +34,7 @@ export default defineConfig({
         // Landing page inputs
         'landing/index': resolve(__dirname, 'apps/landing/index.html'),
         'landing/contact': resolve(__dirname, 'apps/landing/contact.html'),
+        'landing/combo-archive': resolve(__dirname, 'apps/landing/combo-archive.html'),
 
         // EmojiFusion app input
         'emojifusion/index': resolve(__dirname, 'apps/emojifusion/index.html'),
