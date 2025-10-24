@@ -129,12 +129,40 @@ export default async function handler(req: Request) {
       targetDate = new Date().toISOString().split('T')[0];
     }
 
-    // Generate or fetch combo for the target date
+    // Try to fetch from pre-generated JSON first (if available)
+    try {
+      const jsonUrl = 'https://ayotype.com/combo-of-the-day.json';
+      const jsonResponse = await fetch(jsonUrl);
+
+      if (jsonResponse.ok) {
+        const combos = await jsonResponse.json();
+        const preGenerated = combos.find((c: any) => c.date === targetDate);
+
+        if (preGenerated) {
+          // Return pre-generated combo (faster, uses cached data)
+          return new Response(JSON.stringify(preGenerated), {
+            status: 200,
+            headers: {
+              ...headers,
+              'X-Data-Source': 'pre-generated'
+            }
+          });
+        }
+      }
+    } catch (jsonError) {
+      // JSON file not available or doesn't contain this date, fall through to generation
+      console.log('Pre-generated data not available, generating on-the-fly');
+    }
+
+    // Fall back to on-the-fly generation
     const combo = await generateComboForDate(targetDate);
 
     return new Response(JSON.stringify(combo), {
       status: 200,
-      headers
+      headers: {
+        ...headers,
+        'X-Data-Source': 'generated'
+      }
     });
   } catch (error) {
     console.error('Combo of the Day error:', error);

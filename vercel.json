@@ -27,7 +27,7 @@
       "destination": "/apps/landing/blog/$1"
     },
     {
-      "source": "/((?!ads\\.txt$|embed-widget\\.js$).*)",
+      "source": "/((?!ads\\.txt$|embed-widget\\.js$|combo-of-the-day\\.json$|combo-of-the-day/).*)",
       "destination": "/apps/landing/$1"
     }
   ],
