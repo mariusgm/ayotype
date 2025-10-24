@@ -1,27 +1,12 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 // Root Vite config for AyoType monorepo
 // Builds both landing page and EmojiFusion app
 
 export default defineConfig({
-  plugins: [
-    react(),
-    viteStaticCopy({
-      targets: [
-        {
-          src: 'apps/landing/ads.txt',
-          dest: 'apps/landing'
-        },
-        {
-          src: 'apps/landing/ads.txt',
-          dest: '.'
-        }
-      ]
-    })
-  ],
+  plugins: [react()],
   root: '.',
   publicDir: false, // Disable default public dir (apps have their own)
 
