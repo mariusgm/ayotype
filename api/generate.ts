@@ -38,8 +38,12 @@ function getGeminiSystemPrompt(words: string, tone: string, mode: string) {
   const modeInstructions = mode === "emoji"
     ? "Use ONLY emoji characters (🎉✨💫 etc) with optional short text. No ASCII art emoticons."
     : mode === "ascii"
-    ? "Use ONLY ASCII art emoticons (^_^, <3, :D, etc) with text. No Unicode emoji."
-    : "Mix BOTH emoji (🎉✨) AND ASCII art (^_^, <3, :D) together with text in each combo. Example: '☕ (^_^) coffee vibes' or ':D 🌟 happy!'";
+    ? "Use ONLY ASCII art emoticons (^_^, ^^, (˘︶˘), (＾▽＾), :D, etc) with text. No Unicode emoji. Never use <3 (use 'heart' instead)."
+    : "Mix BOTH emoji (🎉✨💖) AND ASCII art emoticons (^_^, (˘︶˘), (＾▽＾), ^^) together in EACH combo. Each combo MUST contain ≥1 emoji AND ≥1 ASCII emoticon like (＾▽＾), (˘︶˘), ^^, or :D. Example: '🥰 (＾▽＾)\\nbig win energy' or '(˘︶˘) ✨\\nwe did it!'";
+
+  const fewShotExample = mode === "both"
+    ? `\n\n📚 Example Output (for reference only, create NEW unique combos):\nTopic: "celebration" · Tone: cute · Mode: combo\n\n{\n  "combos": [\n    {"text": "🥰 (＾▽＾)\\nbig win energy", "name": "victory"},\n    {"text": "(˘︶˘) ✨\\nwe did it!", "name": "proud"},\n    {"text": "💖 ^_^\\nchef's kiss", "name": "perfect"}\n  ]\n}\n\nNotice: Each has emoji + ASCII emoticon, playful riffing phrases, clean single-space formatting, and meaningful variety.`
+    : "";
 
   return `EmojiFusion — Adaptive Line Mode (Gemini 1.5)
 
@@ -67,21 +71,36 @@ The user **cannot specify or influence** how many lines are produced.
 - Keep emojis and ASCII aligned across mobile devices
 - No leading or trailing whitespace
 
+🚫 Spacing & Character Rules (STRICT)
+- Use single spaces only (never double spaces)
+- Never use <3 — use ❤️ emoji instead
+- Never add space inside emoticons: use :D not : D
+- Never add space inside emoji combos
+- Trim all leading/trailing whitespace
+
 💡 Style Rules
 - Interpret the topic freely — riff, expand, or imply a mood or micro-story
   Example: topic "coffee" → "☕ calm start", "(^_^) bloom slow", "in the mood 🌤"
 - Use short emotive fragments or poetic micro-phrases
 - Match tone:
-  - cute → soft and warm
-  - cool → sleek and clean
-  - chaotic → bold and playful
-  - romantic → gentle and affectionate
-  - minimal → simple and elegant
-  - nostalgic → wistful and gentle
-  - aesthetic → calm and balanced
-  - professional → refined, neutral tone with controlled symbols and clean spacing
+  - cute → soft and warm (use 🥰💖✨🌸💫)
+  - cool → sleek and clean (use 🌟⚡️🔥💎🎯)
+  - chaotic → bold and playful (use 🎉🤪💥🎊⚡)
+  - romantic → gentle and affectionate (use 💕💖✨🌹🥰)
+  - minimal → simple and elegant (use ✨・⚪︎▫️)
+  - nostalgic → wistful and gentle (use 🌤️💭✨🍃)
+  - aesthetic → calm and balanced (use ✨🌸💫🍃🌙)
+  - professional → refined, neutral tone with controlled symbols and clean spacing (use ✓・◦)
 - Maintain cohesion across all lines in a combo
 - Vary theme slightly between combos for richness
+
+🎨 Variety Requirements (CRITICAL)
+- **Across all 6 combos, use at least 4 distinct phrases**; at most 2 may reuse exact words from the topic
+- **Include at least 3 playful micro-phrases that do NOT repeat the user's words**
+  Examples: "big win energy", "chef's kiss", "so proud", "we did it", "you crushed it", "feel-good vibes", "loving this", "here for it", "main character energy"
+- **Rotate through emoji classes**: faces (🥰😊), hearts (💖💕), celebration (🎉✨), stars (⭐️💫), hands (👏🤝)
+- **All combos must be meaningfully different** — not just punctuation/emoji swaps
+- **No near-duplicates**: each combo should have a distinct vibe and wording
 
 📤 Output
 Return **strict JSON only** in this exact schema:
@@ -96,7 +115,7 @@ Requirements:
 - JSON must parse without errors
 - "text" = full combo (including any literal \\\\n line breaks)
 - "name" = short lowercase descriptor derived from its vibe
-- No extra keys, no commentary, no markdown`;
+- No extra keys, no commentary, no markdown${fewShotExample}`;
 }
 
 function getGroqSystemPrompt(words: string, tone: string, mode: string, lines: number) {
@@ -105,8 +124,8 @@ function getGroqSystemPrompt(words: string, tone: string, mode: string, lines: n
   const modeInstructions = mode === "emoji"
     ? "Use ONLY emoji characters (🎉✨💫 etc) with optional short text. No ASCII art emoticons."
     : mode === "ascii"
-    ? "Use ONLY ASCII art emoticons (^_^, <3, :D, etc) with text. No Unicode emoji."
-    : "Mix BOTH emoji (🎉✨) AND ASCII art (^_^, <3, :D) together with text in each combo. Example: '☕ (^_^) coffee vibes' or ':D 🌟 happy!'";
+    ? "Use ONLY ASCII art emoticons (^_^, ^^, (˘︶˘), (＾▽＾), :D, etc) with text. No Unicode emoji. Never use <3 (use 'heart' instead)."
+    : "Mix BOTH emoji (🎉✨💖) AND ASCII art emoticons (^_^, (˘︶˘), (＾▽＾), ^^) together in EACH combo. Each combo MUST contain ≥1 emoji AND ≥1 ASCII emoticon like (＾▽＾), (˘︶˘), ^^, or :D. Example: '🥰 (＾▽＾) big win energy' or '(˘︶˘) ✨ we did it!'";
 
   return `EmojiFusion System Prompt (Groq-Optimized for Llama-3.3-70B-Versatile)
 
@@ -134,19 +153,34 @@ FORMAT RULES
 - No leading/trailing whitespace anywhere.
 - Never output text outside the JSON object.
 
+SPACING & CHARACTER RULES (STRICT)
+- Use single spaces only (never double spaces).
+- Never use <3 — use ❤️ emoji instead.
+- Never add space inside emoticons: use :D not : D.
+- Never add space inside emoji combos.
+- Trim all leading/trailing whitespace.
+
 CREATIVE RULES
 - Interpret the topic loosely — riff, expand, or imply mood.
   Example: topic "coffee" → "☕ calm start", "(^_^) bloom slow", "in the mood 🌤".
 - Use short micro-phrases or emotive fragments that feel natural.
 - Match tone:
-  - cute → soft, warm, rounded
-  - cool → balanced, clean
-  - chaotic → playful, bold
-  - minimal → sparse, elegant
-  - nostalgic → gentle, wistful
-  - aesthetic → poetic, calm
+  - cute → soft, warm (use 🥰💖✨🌸💫)
+  - cool → balanced, clean (use 🌟⚡️🔥💎🎯)
+  - chaotic → playful, bold (use 🎉🤪💥🎊⚡)
+  - minimal → sparse, elegant (use ✨・⚪︎▫️)
+  - nostalgic → gentle, wistful (use 🌤️💭✨🍃)
+  - aesthetic → poetic, calm (use ✨🌸💫🍃🌙)
 - Keep internal coherence across lines.
 - Vary theme slightly between combos.
+
+VARIETY REQUIREMENTS (CRITICAL)
+- Across all 6 combos, use at least 4 distinct phrases; at most 2 may reuse exact words from the topic.
+- Include at least 3 playful micro-phrases that do NOT repeat the user's words.
+  Examples: "big win energy", "chef's kiss", "so proud", "we did it", "you crushed it", "feel-good vibes", "loving this", "here for it".
+- Rotate through emoji classes: faces (🥰😊), hearts (💖💕), celebration (🎉✨), stars (⭐️💫), hands (👏🤝).
+- All combos must be meaningfully different — not just punctuation/emoji swaps.
+- No near-duplicates: each combo should have a distinct vibe and wording.
 
 OUTPUT (strict JSON)
 Return only valid JSON in this format:
@@ -196,6 +230,93 @@ function cleanLine(s: string, max = 60) {
   return s.replace(/[\x00-\x1F]/g, "").slice(0, max).trim();
 }
 
+// Backend validation helpers
+function isHybrid(text: string): boolean {
+  // Check for emoji (Unicode emoji range)
+  const hasEmoji = /[\u2190-\u2BFF\u2600-\u27BF\u{1F000}-\u{1FAFF}]/u.test(text);
+  // Check for ASCII emoticons
+  const hasAscii = /[\(\)^_¬°;:]/.test(text);
+  return hasEmoji && hasAscii;
+}
+
+function fixSpacing(text: string): string {
+  return text
+    .replace(/<3/g, '❤️')                    // Replace <3 with heart emoji
+    .replace(/:\s+D/g, ':D')                 // Fix : D → :D
+    .replace(/;\s+\)/g, ';)')                // Fix ; ) → ;)
+    .replace(/\(\s+\^/g, '(^')               // Fix ( ^ → (^
+    .replace(/\s{2,}/g, ' ')                 // Collapse multiple spaces
+    .trim();                                  // Remove leading/trailing whitespace
+}
+
+function levenshteinDistance(a: string, b: string): number {
+  const matrix: number[][] = [];
+
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substitution
+          matrix[i][j - 1] + 1,     // insertion
+          matrix[i - 1][j] + 1      // deletion
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
+
+function validateLineCount(text: string): boolean {
+  const lines = text.split('\n').filter(line => line.trim().length > 0);
+  return lines.length >= 1 && lines.length <= 3;
+}
+
+function dedupeCombos(combos: any[], mode: string): any[] {
+  const result: any[] = [];
+
+  for (const combo of combos) {
+    // Fix spacing issues
+    let text = fixSpacing(combo.combo || combo.text || "");
+
+    // Validate line count
+    if (!validateLineCount(text)) {
+      continue;
+    }
+
+    // For combo mode (both), enforce hybrid requirement
+    if (mode === "both" && !isHybrid(text)) {
+      continue;
+    }
+
+    // Check for near-duplicates (Levenshtein distance < 5)
+    const isDuplicate = result.some(existing => {
+      const existingText = existing.combo || existing.text || "";
+      return levenshteinDistance(text, existingText) < 5;
+    });
+
+    if (!isDuplicate) {
+      result.push({
+        combo: text,
+        text: text,
+        name: combo.name || "combo"
+      });
+    }
+  }
+
+  return result;
+}
+
 export default async function handler(req: Request) {
   if (req.method !== "POST") return new Response("Method Not Allowed", { status: 405 });
   const { words = "", mode = "both", tone = "wholesome", seed = "", lines = 1 } = await req.json().catch(()=> ({}));
@@ -237,9 +358,10 @@ export default async function handler(req: Request) {
         body: JSON.stringify({
           contents: [{ parts: [{ text: geminiPrompt }] }],
           generationConfig: {
-            temperature: 0.9,
-            topP: 0.95,
-            maxOutputTokens: 500
+            temperature: 0.85,
+            topP: 0.9,
+            maxOutputTokens: 350,
+            stopSequences: ["}"]
           }
         })
       });
@@ -354,14 +476,17 @@ export default async function handler(req: Request) {
   if ((isGemini || isGroq) && parsed.combos) {
     const combos = clamp(parsed.combos, 6);
 
+    // Apply backend validation and deduping
+    const validatedCombos = dedupeCombos(combos, payload.mode);
+
     // Convert new format to legacy format for compatibility
-    const emojiCombos = combos.filter(c => !/^[!-~\s\n]*$/.test(c.combo));
-    const asciiCombos = combos.filter(c => /^[!-~\s\n]*$/.test(c.combo));
+    const emojiCombos = validatedCombos.filter(c => !/^[!-~\s\n]*$/.test(c.combo));
+    const asciiCombos = validatedCombos.filter(c => /^[!-~\s\n]*$/.test(c.combo));
 
     safe = {
       meta: { mode: payload.mode, tone: payload.tone, seed: payload.seed },
-      emoji: payload.mode === "ascii" ? [] : (emojiCombos.length > 0 ? emojiCombos : combos),
-      ascii: payload.mode === "emoji" ? [] : (asciiCombos.length > 0 ? asciiCombos : combos)
+      emoji: payload.mode === "ascii" ? [] : (emojiCombos.length > 0 ? emojiCombos : validatedCombos),
+      ascii: payload.mode === "emoji" ? [] : (asciiCombos.length > 0 ? asciiCombos : validatedCombos)
     };
   }
   // Handle legacy format (Upstash/OpenRouter)
