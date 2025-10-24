@@ -8,7 +8,7 @@ import { resolve } from 'path'
 export default defineConfig({
   plugins: [react()],
   root: '.',
-  publicDir: false, // Disable default public dir (apps have their own)
+  publicDir: 'public', // Enable public directory for static files like ads.txt
 
   server: {
     host: "127.0.0.1",
