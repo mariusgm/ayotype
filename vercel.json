@@ -3,10 +3,11 @@
   "outputDirectory": "dist",
   "framework": null,
   "installCommand": "npm install",
-  "rewrites": [
+  "routes": [
+    { "handle": "filesystem" },
     {
-      "source": "/(.*)",
-      "destination": "/apps/emojifusion/$1",
+      "src": "/(.*)",
+      "dest": "/apps/emojifusion/$1",
       "has": [
         {
           "type": "host",
@@ -15,16 +16,16 @@
       ]
     },
     {
-      "source": "/contact",
-      "destination": "/apps/landing/contact.html"
+      "src": "/contact",
+      "dest": "/apps/landing/contact.html"
     },
     {
-      "source": "/blog/(.*)",
-      "destination": "/apps/landing/blog/$1"
+      "src": "/blog/(.*)",
+      "dest": "/apps/landing/blog/$1"
     },
     {
-      "source": "/(.*)",
-      "destination": "/apps/landing/$1"
+      "src": "/(.*)",
+      "dest": "/apps/landing/$1"
     }
   ],
   "headers": [
