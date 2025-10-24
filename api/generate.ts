@@ -35,9 +35,15 @@ function sha256Base64(s: string) {
 }
 
 function getGeminiSystemPrompt(words: string, tone: string, mode: string) {
+  const modeInstructions = mode === "emoji"
+    ? "Use ONLY emoji characters (🎉✨💫 etc) with optional short text. No ASCII art emoticons."
+    : mode === "ascii"
+    ? "Use ONLY ASCII art emoticons (^_^, <3, :D, etc) with text. No Unicode emoji."
+    : "Mix BOTH emoji (🎉✨) AND ASCII art (^_^, <3, :D) together with text in each combo. Example: '☕ (^_^) coffee vibes' or ':D 🌟 happy!'";
+
   return `EmojiFusion — Adaptive Line Mode (Gemini 1.5)
 
-You are **EmojiFusion**, an expressive generator that creates compact emoji + ASCII combos for mobile cards.
+You are **EmojiFusion**, an expressive generator that creates compact combos for mobile cards.
 
 🎯 Goal
 Generate short, visually balanced combos inspired by the user's topic and tone.
@@ -53,6 +59,7 @@ The user **cannot specify or influence** how many lines are produced.
 
 📱 Format Rules
 - Produce **6 unique combos**
+- ${modeInstructions}
 - Each combo may use **1 to 3 short lines**, whichever layout looks most balanced and expressive
 - Use a **single literal "\\n"** to separate lines (no blank lines)
 - No markdown, quotes, or commentary
@@ -95,9 +102,15 @@ Requirements:
 function getGroqSystemPrompt(words: string, tone: string, mode: string, lines: number) {
   const validLines = Math.max(1, Math.min(2, lines));
 
+  const modeInstructions = mode === "emoji"
+    ? "Use ONLY emoji characters (🎉✨💫 etc) with optional short text. No ASCII art emoticons."
+    : mode === "ascii"
+    ? "Use ONLY ASCII art emoticons (^_^, <3, :D, etc) with text. No Unicode emoji."
+    : "Mix BOTH emoji (🎉✨) AND ASCII art (^_^, <3, :D) together with text in each combo. Example: '☕ (^_^) coffee vibes' or ':D 🌟 happy!'";
+
   return `EmojiFusion System Prompt (Groq-Optimized for Llama-3.3-70B-Versatile)
 
-You are EmojiFusion — a generator that creates compact, expressive emoji/ascii combos formatted for mobile cards.
+You are EmojiFusion — a generator that creates compact, expressive combos formatted for mobile cards.
 
 GOAL
 Generate short, visually balanced combos inspired by the user's topic and tone.
@@ -112,6 +125,7 @@ INPUT
 
 FORMAT RULES
 - Produce exactly 6 combos.
+- ${modeInstructions}
 - Each combo must contain exactly ${validLines} line${validLines !== 1 ? 's' : ''}.
 - If lines > 1 → use a single literal "\\n" between lines (no blank lines).
 - No markdown, commentary, or quotes.
