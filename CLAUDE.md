@@ -83,6 +83,7 @@ pkill -f "local-api-server"
 - `apps/landing/` - Landing page and contact form
 - `apps/emojifusion/` - EmojiFusion app
 - `api/` - Serverless API functions (generate, contact)
+- `shared/ad-manager/` - Modular ad integration system (GDPR compliant)
 - `public/` - Static files served at root (ads.txt, robots.txt, etc.)
 - `dist/` - Build output directory
 
@@ -104,6 +105,15 @@ pkill -f "local-api-server"
   - Main domain (ayotype.com) → `apps/landing/`
   - Subdomain (emojifusion.ayotype.com) → `apps/emojifusion/`
   - Static files (ads.txt) excluded from catch-all rewrites
+
+**Ad Integration System** (`shared/ad-manager/`):
+- **Core**: AdManager orchestrates ad lifecycle, async loading, consent integration
+- **Containers**: Pre-built responsive ad components (Sidebar, InFeed, Anchor)
+- **Consent**: GDPR/CCPA compliant consent management with cookie banner
+- **A/B Testing**: Data-driven optimization framework for ad placements
+- **Performance**: Zero CLS impact, lazy loading, Core Web Vitals optimized
+- **Accessibility**: WCAG 2.1 AA compliant with skip links and ARIA labels
+- See `AD_ARCHITECTURE.md` for full documentation
 
 ### Browser Testing (REQUIRED after changes)
 
@@ -184,7 +194,26 @@ npm run init
    - Enabled Vite `publicDir` option to copy static files
    - Status: ✅ Working - accessible at https://ayotype.com/ads.txt
 
-6. **Bug Fixes**
+6. **Modular Ad Integration Architecture**
+   - Designed comprehensive ad system architecture (see `AD_ARCHITECTURE.md`)
+   - Implemented core modules:
+     - `AdManager` - Central orchestration with consent integration
+     - `AdLoader` - Async script loading (non-blocking, performance-optimized)
+     - `AdContainer` - Base React component with lazy loading
+     - `SidebarAd`, `InFeedAd`, `AnchorAd` - Pre-built responsive containers
+     - `ConsentManager` - GDPR/CCPA compliant consent management
+     - `ConsentBanner` - User-friendly consent UI with granular controls
+     - `ABTestManager` - A/B testing framework for optimization
+     - `VariantAssigner` - Stable user bucketing for tests
+   - Features:
+     - Zero CLS impact with reserved space for ads
+     - Lazy loading with IntersectionObserver (500px margin)
+     - WCAG 2.1 AA accessible with skip links and ARIA labels
+     - Performance monitoring (CLS, LCP, FID tracking)
+     - Test mode for development (shows placeholders)
+   - Status: ✅ Complete - ready for integration
+
+7. **Bug Fixes**
    - Fixed JSON parsing error in contact form (404 → proper endpoint)
    - Fixed API JSON parsing (removed problematic stop sequences)
    - Added proper error handling and logging

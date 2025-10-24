@@ -31,7 +31,15 @@
       "WebFetch(domain:ayotype.com)",
       "Bash(curl:*)",
       "Bash(vercel ls:*)",
-      "Bash(lsof:*)"
+      "Bash(lsof:*)",
+      "Bash(gh auth:*)",
+      "Bash(vercel logs:*)",
+      "Bash(npm run build:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(git commit:*)",
+      "WebSearch",
+      "Bash(vercel inspect:*)"
     ],
     "deny": [],
     "ask": []
