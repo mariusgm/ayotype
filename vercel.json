@@ -16,7 +16,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/emojifusion/$1",
+      "destination": "/apps/emojifusion/$1",
       "has": [
         {
           "type": "host",
@@ -26,7 +26,7 @@
     },
     {
       "source": "/contact",
-      "destination": "/landing/contact.html"
+      "destination": "/apps/landing/contact.html"
     },
     {
       "source": "/blog/(.*)",
@@ -34,7 +34,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/landing/$1"
+      "destination": "/apps/landing/$1"
     }
   ],
   "headers": [
