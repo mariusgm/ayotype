@@ -36,12 +36,26 @@ ayotype/
 │   ├── emojifusion/          # emojifusion.ayotype.com
 │   │   ├── index.html
 │   │   ├── src/
-│   │   ├── api/
 │   │   └── public/
 │   │
 │   └── [future-apps]/
 │
+├── api/                      # Serverless functions
+│   ├── generate.ts           # EmojiFusion generation
+│   └── contact.ts            # Contact form email
+│
 ├── shared/                   # Shared across all apps
+│   └── ad-manager/           # Ad integration system
+│       ├── core/             # AdManager, AdLoader
+│       ├── containers/       # Ad components
+│       ├── consent/          # GDPR/CCPA compliance
+│       ├── testing/          # A/B testing
+│       └── utils/            # Lazy loading, storage
+│
+├── public/                   # Static files (ads.txt, etc.)
+├── docs/                     # Documentation
+│   └── archive/              # Historical docs
+│
 ├── scripts/                  # Build scripts
 ├── vite.config.ts            # Root Vite config
 ├── vercel.json               # Multi-domain deployment config
@@ -134,10 +148,13 @@ vercel
 
 Required for deployment:
 
-- `GROQ_API_KEY` - Groq API key (fallback)
-- `GEMINI_API_KEY` - Google Gemini API key (primary)
-- `SENDGRID_API_KEY` - SendGrid for contact form
-- `CONTACT_EMAIL` - Email for contact form submissions
+- `GROQ_API_KEY` - Groq API key (Llama 3.3 70B fallback)
+- `GOOGLEGEMINI_API_KEY` - Google Gemini API key (primary LLM)
+- `RESEND_API_KEY` - Resend for contact form email delivery
+- `CONTACT_EMAIL` - Email for contact form submissions (defaults to support@ayotype.com)
+- `UPSTASH_REDIS_REST_URL` - Redis caching URL
+- `UPSTASH_REDIS_REST_TOKEN` - Redis authentication token
+- `RECAPTCHA_SECRET_KEY` - Optional spam protection
 
 ## Project Domains
 
@@ -163,6 +180,15 @@ Required for deployment:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## Documentation
+
+- **[CLAUDE.md](./CLAUDE.md)** - Project knowledge base, architecture, session history
+- **[AD_ARCHITECTURE.md](./AD_ARCHITECTURE.md)** - Ad system design and strategy
+- **[AD_INTEGRATION_GUIDE.md](./AD_INTEGRATION_GUIDE.md)** - Ad integration quick start
+- **[NEXT_SESSION.md](./NEXT_SESSION.md)** - Session planning and priorities
+- **[COMBO_OF_THE_DAY.md](./COMBO_OF_THE_DAY.md)** - Daily combo feature setup
+- **[docs/archive/](./docs/archive/)** - Historical documentation
+
 ## License
 
 MIT © Marius Mevold
@@ -172,4 +198,5 @@ MIT © Marius Mevold
 - [Main Site](https://ayotype.com)
 - [EmojiFusion](https://emojifusion.ayotype.com)
 - [Contact](https://ayotype.com/contact)
+- [ads.txt](https://ayotype.com/ads.txt)
 - [Bluesky](https://bsky.app/profile/ayotype.bsky.social)

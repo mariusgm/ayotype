@@ -1,185 +1,182 @@
-# 🎯 Next Session Starting Point
+# 🎯 Next Session Guide
 
 **Last Updated:** 2025-10-24
-**Session Duration:** ~2 hours
-**Status:** Contact form 95% complete, pending DNS verification
+**Current Status:** Ad architecture complete, ads.txt live, contact form pending verification
 
 ---
 
-## 🚨 START HERE: Immediate Tasks
+## 🚨 Priority 1: Contact Form Email Delivery
 
-### Task 1: Verify Contact Form Email Delivery (15 min)
+**Status:** Resend domain verification pending (DNS propagation)
 
-**Problem:** Resend requires domain verification. DNS records added but not yet verified.
+### Steps to Complete:
+1. **Verify DNS Records** (5 min)
+   - Go to: https://resend.com/domains
+   - Find `ayotype.com` domain
+   - Click "Verify" on each DNS record
+   - Wait for green checkmarks
 
-**Steps:**
-1. Go to: https://resend.com/domains
-2. Find `ayotype.com` domain
-3. Click "Verify" on each DNS record (TXT records)
-4. Wait 1-2 minutes for verification
-5. Test email delivery:
+2. **Test Email Delivery** (5 min)
    ```bash
    curl -X POST https://ayotype.com/api/contact \
      -H "Content-Type: application/json" \
-     -d '{"name":"Test","email":"your-email@example.com","message":"Testing email delivery"}'
+     -d '{"name":"Test User","email":"your@email.com","message":"Testing"}'
    ```
-6. Check your inbox for the email
 
-**If verification fails:**
-- Check Namecheap DNS settings match Resend requirements
-- DNS can take up to 48 hours (usually 15 min)
-- **Workaround:** Use test domain `onboarding@resend.dev` temporarily
+3. **Browser Test** (10 min)
+   - Visit: https://ayotype.com/contact
+   - Fill out form and submit
+   - Verify email arrives
+   - Check console for errors
 
----
-
-### Task 2: Browser Test Contact Form (10 min)
-
-**MANDATORY before considering complete!**
-
-1. Visit: https://ayotype.com/contact
-2. Fill out form with real data
-3. Submit form
-4. Verify success/error message
-5. Check browser console (F12) for errors
-6. Verify email arrives in inbox
+**If verification fails:** DNS can take up to 48 hours. Temporary workaround: use `onboarding@resend.dev`
 
 ---
 
-### Task 3: Test EmojiFusion Modes (5 min)
+## ✅ Recently Completed
 
-Verify the mode fix is working in production:
-
-1. Visit: https://emojifusion.ayotype.com
-2. Test three modes:
-   - **Emoji**: Should show only emoji + text
-   - **ASCII**: Should show only ASCII art (^_^, :D, <3)
-   - **Both**: Should show **mixed** emoji + ASCII in same combo
-3. Verify console has no errors
+- ✅ **ads.txt** - Google AdSense verification file live at https://ayotype.com/ads.txt
+- ✅ **Ad Architecture** - Complete modular system with GDPR compliance (see `AD_ARCHITECTURE.md`)
+- ✅ **Documentation Cleanup** - Archived historical docs, streamlined main documentation
 
 ---
 
-## 📊 Current System Status
+## 🚀 Next Steps: Ad Integration
 
-### ✅ Working
-- EmojiFusion generation API (emoji, ascii, both modes)
-- Redis caching (7-day cache, 10 req/min rate limit)
-- Contact form validation
-- Vercel deployment (consolidated monorepo)
-- Custom domains (ayotype.com, emojifusion.ayotype.com)
+Once contact form is verified, proceed with ad integration:
 
-### ⏳ Pending
-- Contact form email delivery (Resend domain verification)
-- End-to-end browser testing
+### Phase 1: Setup (Week 1)
+1. **Initialize Ad Manager** in app entry points
+   - See `AD_INTEGRATION_GUIDE.md` for setup instructions
+   - Start in test mode (shows placeholders)
 
-### 🔧 Environment Variables (Vercel)
-All configured and working:
-- ✅ GOOGLEGEMINI_API_KEY
-- ✅ GROQ_API_KEY
-- ✅ UPSTASH_REDIS_REST_URL
-- ✅ UPSTASH_REDIS_REST_TOKEN
-- ✅ RESEND_API_KEY
-- ✅ RECAPTCHA_SECRET_KEY
+2. **Add Consent Banner** to root components
+   - GDPR-compliant cookie consent
+   - Granular controls for ads/analytics/personalization
 
----
+3. **Add First Ad Unit**
+   - Start with single sidebar ad on landing page
+   - Desktop only (>1024px)
+   - Monitor Core Web Vitals impact
 
-## 🐛 Known Issues
+### Phase 2: Testing (Week 2)
+1. **Monitor Performance**
+   - CLS < 0.05 per ad unit
+   - LCP increase < 200ms
+   - No console errors
 
-**None currently!** All identified issues resolved.
+2. **A/B Test Sidebar Presence**
+   - 50/50 split: show sidebar vs hide
+   - Track: CTR, bounce rate, time on page
+   - Run for 2-4 weeks
 
----
+3. **Optimize Based on Data**
+   - Adjust ad density
+   - Test different formats (display vs native)
+   - Fine-tune lazy loading thresholds
 
-## 🎨 Possible Future Enhancements
-
-### High Priority
-1. Add browser-based testing automation
-2. Implement contact form honeypot (spam prevention)
-3. Add email delivery monitoring/alerts
-
-### Medium Priority
-4. Add more emoji generation tones (professional, nostalgic, etc.)
-5. Implement combo favoriting/saving
-6. Add combo sharing functionality
-
-### Low Priority
-7. Dark mode for landing page
-8. Analytics integration
-9. Blog functionality (content in vercel.json but not implemented)
+### Phase 3: Scale (Week 3+)
+1. Add in-feed ads (after hero section)
+2. Add mobile anchor ad (emojifusion.ayotype.com)
+3. Expand to EmojiFusion app
+4. Consider premium ad networks if traffic warrants
 
 ---
 
-## 🔗 Quick Reference Links
+## 📋 Quick Reference Commands
 
-**Production:**
-- Landing: https://ayotype.com
-- EmojiFusion: https://emojifusion.ayotype.com
-- Contact: https://ayotype.com/contact
-
-**Development:**
-- Start servers: `npm run dev:api` + `npm run dev:ui`
-- Local app: http://127.0.0.1:3000/apps/emojifusion/index.html
-- Local API: http://127.0.0.1:3001/api/generate
-
-**Admin Dashboards:**
-- Vercel: https://vercel.com/marius-projects-ef752e48/ayotype
-- Resend: https://resend.com/domains
-- Upstash Redis: https://console.upstash.com/
-- Namecheap DNS: https://ap.www.namecheap.com/domains/domaincontrolpanel/ayotype.com/advancedns
-
----
-
-## 📝 Session Commits (Reference)
-
-```
-3ec4a58 - Switch from SendGrid to Resend for email delivery
-116ff9d - Add proper error handling for SendGrid email failures
-9528e0c - Add contact form API endpoint and mandatory browser testing docs
-2341bf8 - Fix JSON parsing by removing problematic stop sequences
-f398c71 - Add mode support: emoji-only, ASCII-only, and mixed combos
-0e1f0a4 - Move API function to root /api directory for Vercel serverless detection
-0071fcb - Fix Vercel routing to match actual build output structure
-ad1baa7 - Fix Vercel routing paths to work with outputDirectory
-1b91b7b - Fix EmojiFusion resource loading and add comprehensive browser testing
-```
-
----
-
-## ⚡ Quick Commands
-
-**Test Contact API:**
+### Development
 ```bash
+npm run dev          # Start UI + API servers
+npm run dev:ui       # UI only (port 3000)
+npm run dev:api      # API only (port 3001)
+npm run test:api     # Test generation endpoint
+```
+
+### Deployment
+```bash
+npm run build        # Build for production
+vercel --prod        # Deploy to production
+vercel logs --follow # Monitor deployment logs
+```
+
+### Testing
+```bash
+# Test ads.txt
+curl https://ayotype.com/ads.txt
+
+# Test contact form
 curl -X POST https://ayotype.com/api/contact \
   -H "Content-Type: application/json" \
-  -d '{"name":"Test","email":"test@example.com","message":"Test message"}'
-```
+  -d '{"name":"Test","email":"test@example.com","message":"Test"}'
 
-**Test EmojiFusion API:**
-```bash
+# Test generation
 curl -X POST https://emojifusion.ayotype.com/api/generate \
   -H "Content-Type: application/json" \
-  -d '{"words":"happy","mode":"both","tone":"fun"}'
-```
-
-**Deploy to Production:**
-```bash
-git push && cd C:/git_marius/ayotype && vercel --prod
-```
-
-**Check Logs:**
-```bash
-vercel logs --since 5m
+  -d '{"words":"test","mode":"both","tone":"cute","lines":1}'
 ```
 
 ---
 
-## 🎯 Success Criteria for Next Session
+## 📚 Documentation Structure
 
-Contact form is considered **COMPLETE** when:
-1. ✅ Email is successfully delivered to inbox
-2. ✅ Browser testing shows no errors
-3. ✅ Form validation works correctly
-4. ✅ Success/error messages display properly
-5. ✅ Reply-to functionality works (can reply directly to submitter)
+**Main Docs (Keep Updated):**
+- `CLAUDE.md` - Project knowledge base (architecture, session history)
+- `README.md` - Project overview and quick start
+- `AD_ARCHITECTURE.md` - Ad system design and strategy
+- `AD_INTEGRATION_GUIDE.md` - Step-by-step integration guide
+- `NEXT_SESSION.md` - This file, session planning
+
+**Feature Docs:**
+- `COMBO_OF_THE_DAY.md` - Daily combo generation feature
+- `CLAUDE_AGENT_RUNTIME_SETUP.md` - Browser testing setup
+
+**Archived (Historical):**
+- `docs/archive/` - Old deployment guides, cleanup summaries, test results
 
 ---
 
-**Remember:** ALWAYS test in browser before deploying! 🌐
+## 🎯 Success Metrics
+
+### Contact Form
+- ✅ Form loads without errors
+- ✅ Submission triggers email
+- ✅ User receives success message
+- ✅ No console errors
+
+### Ad Integration (When Complete)
+- ✅ CLS < 0.1 overall
+- ✅ LCP < 2.5s
+- ✅ Bounce rate increase < 5%
+- ✅ CTR > 0.5%
+- ✅ RPM > $2
+
+---
+
+## 💡 Tips for Next Session
+
+1. **Always test in browser** after API/UI changes (see pre-commit hook reminder)
+2. **Check CLAUDE.md** first for current architecture and patterns
+3. **Use AD_INTEGRATION_GUIDE.md** for ad implementation examples
+4. **Monitor Core Web Vitals** when adding ads (Lighthouse or web-vitals library)
+5. **Start with test mode** - only switch to production ads after thorough testing
+
+---
+
+## 🔗 Quick Links
+
+- **Production Sites:**
+  - Landing: https://ayotype.com
+  - EmojiFusion: https://emojifusion.ayotype.com
+  - Contact: https://ayotype.com/contact
+  - ads.txt: https://ayotype.com/ads.txt
+
+- **Admin Dashboards:**
+  - Vercel: https://vercel.com/dashboard
+  - Resend: https://resend.com/domains
+  - Google AdSense: https://adsense.google.com
+  - Upstash Redis: https://console.upstash.com
+
+---
+
+**Ready to start?** → Check Priority 1 above!

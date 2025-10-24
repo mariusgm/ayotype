@@ -39,7 +39,9 @@
       "Bash(cat:*)",
       "Bash(git commit:*)",
       "WebSearch",
-      "Bash(vercel inspect:*)"
+      "Bash(vercel inspect:*)",
+      "Bash(awk:*)",
+      "Bash(xargs kill:*)"
     ],
     "deny": [],
     "ask": []
