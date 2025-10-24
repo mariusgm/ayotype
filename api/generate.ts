@@ -42,7 +42,7 @@ function getGeminiSystemPrompt(words: string, tone: string, mode: string) {
     : "Mix BOTH emoji (🎉✨💖) AND ASCII art emoticons (^_^, (˘︶˘), (＾▽＾), ^^) together in EACH combo. Each combo MUST contain ≥1 emoji AND ≥1 ASCII emoticon like (＾▽＾), (˘︶˘), ^^, or :D. Example: '🥰 (＾▽＾)\\nbig win energy' or '(˘︶˘) ✨\\nwe did it!'";
 
   const fewShotExample = mode === "both"
-    ? `\n\n📚 Example Output (for reference only, create NEW unique combos):\nTopic: "celebration" · Tone: cute · Mode: combo\n\n{\n  "combos": [\n    {"text": "🥰 (＾▽＾)\\nbig win energy", "name": "victory"},\n    {"text": "(˘︶˘) ✨\\nwe did it!", "name": "proud"},\n    {"text": "💖 ^_^\\nchef's kiss", "name": "perfect"}\n  ]\n}\n\nNotice: Each has emoji + ASCII emoticon, playful riffing phrases, clean single-space formatting, and meaningful variety.`
+    ? `\n\n📚 Example Output (for reference only, create NEW unique combos):\nTopic: "celebration" · Tone: cute · Mode: combo\n\n{\n  "combos": [\n    {"text": "🎉 (＾▽＾)\\ncelebration time", "name": "party"},\n    {"text": "💖 ^_^\\ncelebration vibes", "name": "joyful"},\n    {"text": "✨ (˘︶˘)\\ncelebration feels", "name": "sparkly"},\n    {"text": "🥰 ^^\\nbig win energy", "name": "victory"},\n    {"text": "(＾▽＾) 🌟\\nwe did it!", "name": "proud"},\n    {"text": "💫 :D\\nchef's kiss", "name": "perfect"}\n  ]\n}\n\nNotice: First 3 include "celebration" (preserving user input), last 3 are creative riffs. Each has emoji + ASCII emoticon, clean single-space formatting, and meaningful variety.`
     : "";
 
   return `EmojiFusion — Adaptive Line Mode (Gemini 1.5)
@@ -95,9 +95,10 @@ The user **cannot specify or influence** how many lines are produced.
 - Vary theme slightly between combos for richness
 
 🎨 Variety Requirements (CRITICAL)
-- **Across all 6 combos, use at least 4 distinct phrases**; at most 2 may reuse exact words from the topic
-- **Include at least 3 playful micro-phrases that do NOT repeat the user's words**
-  Examples: "big win energy", "chef's kiss", "so proud", "we did it", "you crushed it", "feel-good vibes", "loving this", "here for it", "main character energy"
+- **At least 3 combos MUST include words from the user's original input** — preserve their exact words
+  Example: input "GREAT" → at least 3 combos should contain "great"
+- **The remaining 3 combos can be creative riffs** — use playful micro-phrases that expand on the theme
+  Examples: "big win energy", "chef's kiss", "so proud", "we did it", "you crushed it", "feel-good vibes", "loving this", "here for it"
 - **Rotate through emoji classes**: faces (🥰😊), hearts (💖💕), celebration (🎉✨), stars (⭐️💫), hands (👏🤝)
 - **All combos must be meaningfully different** — not just punctuation/emoji swaps
 - **No near-duplicates**: each combo should have a distinct vibe and wording
@@ -175,8 +176,9 @@ CREATIVE RULES
 - Vary theme slightly between combos.
 
 VARIETY REQUIREMENTS (CRITICAL)
-- Across all 6 combos, use at least 4 distinct phrases; at most 2 may reuse exact words from the topic.
-- Include at least 3 playful micro-phrases that do NOT repeat the user's words.
+- At least 3 combos MUST include words from the user's original input — preserve their exact words.
+  Example: input "GREAT" → at least 3 combos should contain "great".
+- The remaining 3 combos can be creative riffs — use playful micro-phrases that expand on the theme.
   Examples: "big win energy", "chef's kiss", "so proud", "we did it", "you crushed it", "feel-good vibes", "loving this", "here for it".
 - Rotate through emoji classes: faces (🥰😊), hearts (💖💕), celebration (🎉✨), stars (⭐️💫), hands (👏🤝).
 - All combos must be meaningfully different — not just punctuation/emoji swaps.
