@@ -225,8 +225,7 @@ export default async function handler(req: Request) {
           generationConfig: {
             temperature: 0.9,
             topP: 0.95,
-            maxOutputTokens: 400,
-            stopSequences: ["}"]
+            maxOutputTokens: 500
           }
         })
       });
@@ -258,8 +257,7 @@ export default async function handler(req: Request) {
         messages: [{ role: "system", content: groqPrompt }],
         temperature: 0.8,
         top_p: 0.9,
-        max_tokens: 350,
-        stop: ["}"]
+        max_tokens: 450
       })
     });
   } 
@@ -317,13 +315,15 @@ export default async function handler(req: Request) {
   // Strict JSON & sanitation
   let parsed: any;
   try {
-    // Handle potential incomplete JSON from stop tokens
+    // Clean and parse JSON response
     let cleanContent = content.trim();
-    if ((isGroq || isGemini) && !cleanContent.endsWith('}')) {
-      cleanContent += '}';
+    // Extract JSON if wrapped in markdown code blocks
+    if (cleanContent.startsWith('```')) {
+      cleanContent = cleanContent.replace(/```json?\n?/g, '').replace(/```/g, '').trim();
     }
     parsed = JSON.parse(cleanContent);
-  } catch {
+  } catch (e) {
+    console.error('JSON parse error:', e, 'Content:', content);
     return new Response("Bad JSON", { status: 502 });
   }
 
