@@ -87,33 +87,32 @@ export default async function handler(req: Request) {
       }
     }
 
-    // Send email via SendGrid
-    const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+    // Send email via Resend
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
-    if (SENDGRID_API_KEY) {
+    if (RESEND_API_KEY) {
       try {
-        const emailResponse = await fetch('https://api.sendgrid.com/v3/mail/send', {
+        const emailResponse = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${SENDGRID_API_KEY}`,
+            'Authorization': `Bearer ${RESEND_API_KEY}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            personalizations: [{
-              to: [{ email: CONTACT_EMAIL }],
-              subject: `Contact Form Submission from ${name}`
-            }],
-            from: {
-              email: 'noreply@ayotype.com',
-              name: 'AyoType Contact Form'
-            },
-            reply_to: {
-              email: email,
-              name: name
-            },
-            content: [{
-              type: 'text/plain',
-              value: `New contact form submission:
+            from: 'AyoType Contact <noreply@ayotype.com>',
+            to: [CONTACT_EMAIL],
+            reply_to: email,
+            subject: `Contact Form: ${name}`,
+            html: `<html><body>
+<h2>New Contact Form Submission</h2>
+<p><strong>Name:</strong> ${name}</p>
+<p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+<p><strong>IP:</strong> ${ip}</p>
+<p><strong>Time:</strong> ${new Date().toISOString()}</p>
+<h3>Message:</h3>
+<p>${message.replace(/\n/g, '<br>')}</p>
+</body></html>`,
+            text: `New contact form submission:
 
 Name: ${name}
 Email: ${email}
@@ -122,24 +121,12 @@ Time: ${new Date().toISOString()}
 
 Message:
 ${message}`
-            }, {
-              type: 'text/html',
-              value: `<html><body>
-<h2>New Contact Form Submission</h2>
-<p><strong>Name:</strong> ${name}</p>
-<p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-<p><strong>IP:</strong> ${ip}</p>
-<p><strong>Time:</strong> ${new Date().toISOString()}</p>
-<h3>Message:</h3>
-<p>${message.replace(/\n/g, '<br>')}</p>
-</body></html>`
-            }]
           })
         });
 
         if (!emailResponse.ok) {
           const errorText = await emailResponse.text();
-          console.error('SendGrid API error:', {
+          console.error('Resend API error:', {
             status: emailResponse.status,
             statusText: emailResponse.statusText,
             body: errorText,
@@ -156,7 +143,9 @@ ${message}`
           });
         }
 
+        const result = await emailResponse.json();
         console.log('Contact form email sent successfully:', {
+          id: result.id,
           name,
           email,
           to: CONTACT_EMAIL,
@@ -175,8 +164,8 @@ ${message}`
         });
       }
     } else {
-      // SendGrid not configured - warn and return error
-      console.warn('SendGrid API key not configured! Email not sent:', {
+      // Resend not configured - warn and return error
+      console.warn('Resend API key not configured! Email not sent:', {
         name,
         email,
         message: message.substring(0, 100),
