@@ -87,34 +87,78 @@ export default async function handler(req: Request) {
       }
     }
 
-    // TODO: Send email using your preferred service (SendGrid, Resend, etc.)
-    // For now, just log it
-    console.log('Contact form submission:', {
-      name,
-      email,
-      message: message.substring(0, 100),
-      ip,
-      timestamp: new Date().toISOString()
-    });
+    // Send email via SendGrid
+    const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 
-    // In production, you would send an email here
-    // Example with Resend (if configured):
-    // const RESEND_API_KEY = process.env.RESEND_API_KEY;
-    // if (RESEND_API_KEY) {
-    //   await fetch('https://api.resend.com/emails', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Authorization': `Bearer ${RESEND_API_KEY}`,
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       from: 'contact@ayotype.com',
-    //       to: CONTACT_EMAIL,
-    //       subject: `Contact Form: ${name}`,
-    //       text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-    //     })
-    //   });
-    // }
+    if (SENDGRID_API_KEY) {
+      try {
+        const emailResponse = await fetch('https://api.sendgrid.com/v3/mail/send', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${SENDGRID_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            personalizations: [{
+              to: [{ email: CONTACT_EMAIL }],
+              subject: `Contact Form Submission from ${name}`
+            }],
+            from: {
+              email: 'noreply@ayotype.com',
+              name: 'AyoType Contact Form'
+            },
+            reply_to: {
+              email: email,
+              name: name
+            },
+            content: [{
+              type: 'text/plain',
+              value: `New contact form submission:
+
+Name: ${name}
+Email: ${email}
+IP: ${ip}
+Time: ${new Date().toISOString()}
+
+Message:
+${message}`
+            }, {
+              type: 'text/html',
+              value: `<html><body>
+<h2>New Contact Form Submission</h2>
+<p><strong>Name:</strong> ${name}</p>
+<p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+<p><strong>IP:</strong> ${ip}</p>
+<p><strong>Time:</strong> ${new Date().toISOString()}</p>
+<h3>Message:</h3>
+<p>${message.replace(/\n/g, '<br>')}</p>
+</body></html>`
+            }]
+          })
+        });
+
+        if (!emailResponse.ok) {
+          const errorText = await emailResponse.text();
+          console.error('SendGrid error:', errorText);
+          throw new Error('Failed to send email');
+        }
+
+        console.log('Contact form email sent successfully:', { name, email, timestamp: new Date().toISOString() });
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError);
+        // Don't fail the whole request if email fails - still return success
+        // but log the error for monitoring
+      }
+    } else {
+      // Log submission if SendGrid not configured (dev mode)
+      console.log('Contact form submission (SendGrid not configured):', {
+        name,
+        email,
+        message: message.substring(0, 100),
+        ip,
+        timestamp: new Date().toISOString()
+      });
+    }
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
