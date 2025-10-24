@@ -139,24 +139,57 @@ ${message}`
 
         if (!emailResponse.ok) {
           const errorText = await emailResponse.text();
-          console.error('SendGrid error:', errorText);
-          throw new Error('Failed to send email');
+          console.error('SendGrid API error:', {
+            status: emailResponse.status,
+            statusText: emailResponse.statusText,
+            body: errorText,
+            timestamp: new Date().toISOString()
+          });
+
+          // Return error to user if email fails
+          return new Response(JSON.stringify({
+            success: false,
+            error: 'Failed to send email. Please try again or contact support@ayotype.com directly.'
+          }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+          });
         }
 
-        console.log('Contact form email sent successfully:', { name, email, timestamp: new Date().toISOString() });
+        console.log('Contact form email sent successfully:', {
+          name,
+          email,
+          to: CONTACT_EMAIL,
+          timestamp: new Date().toISOString()
+        });
       } catch (emailError) {
-        console.error('Email sending failed:', emailError);
-        // Don't fail the whole request if email fails - still return success
-        // but log the error for monitoring
+        console.error('Email sending exception:', emailError);
+
+        // Return error to user if email fails
+        return new Response(JSON.stringify({
+          success: false,
+          error: 'Failed to send email. Please try again or contact support@ayotype.com directly.'
+        }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        });
       }
     } else {
-      // Log submission if SendGrid not configured (dev mode)
-      console.log('Contact form submission (SendGrid not configured):', {
+      // SendGrid not configured - warn and return error
+      console.warn('SendGrid API key not configured! Email not sent:', {
         name,
         email,
         message: message.substring(0, 100),
         ip,
         timestamp: new Date().toISOString()
+      });
+
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Email service not configured. Please contact support@ayotype.com directly.'
+      }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
       });
     }
 
