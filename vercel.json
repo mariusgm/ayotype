@@ -15,6 +15,10 @@
       ]
     },
     {
+      "source": "/ads.txt",
+      "destination": "/apps/landing/ads.txt"
+    },
+    {
       "source": "/contact",
       "destination": "/apps/landing/contact.html"
     },
