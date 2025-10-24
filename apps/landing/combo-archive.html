@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combo Archive — AyoType</title>
+  <meta name="description" content="Browse all past Combo of the Day entries. Daily curated emoji and ASCII art combinations.">
+  <link rel="canonical" href="https://ayotype.com/combo-archive">
+
+  <!-- Google Analytics (gtag.js) with Consent Mode -->
+  <script>
+    // Initialize gtag consent mode (default: denied)
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      'analytics_storage': 'denied',
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied'
+    });
+    gtag('js', new Date());
+    gtag('config', 'G-RWETGB9C39');
+
+    // Update consent based on user preference
+    (function() {
+      try {
+        const consent = localStorage.getItem('ayotype_ad_consent');
+        if (consent) {
+          const prefs = JSON.parse(consent);
+          if (prefs.analytics) {
+            gtag('consent', 'update', {
+              'analytics_storage': 'granted'
+            });
+          }
+          if (prefs.advertising) {
+            gtag('consent', 'update', {
+              'ad_storage': 'granted',
+              'ad_user_data': 'granted',
+              'ad_personalization': 'granted'
+            });
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RWETGB9C39"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0a0a0a;
+      --text-primary: #f7f7f5;
+      --text-secondary: #b6b6b1;
+      --text-muted: #9a9a96;
+      --accent-pink: #FF79C6;
+      --accent-yellow: #FFD94E;
+      --accent-gradient: linear-gradient(135deg, #FF79C6, #FFD94E);
+      --border-subtle: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: radial-gradient(ellipse at top, hsl(0, 0%, 9%) 0%, #0a0a0a 50%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 60px 24px 40px;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 8px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .back-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.3s;
+    }
+
+    .back-link:hover {
+      color: var(--accent-pink);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      margin-top: 24px;
+    }
+
+    .subtitle {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 24px;
+    }
+
+    /* Archive Grid */
+    .archive-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    @media (min-width: 768px) {
+      .archive-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .archive-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .combo-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .combo-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-pink);
+      box-shadow: 0 12px 32px rgba(255, 121, 198, 0.2);
+    }
+
+    .combo-date {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .combo-text {
+      font-size: 2.5rem;
+      line-height: 1.2;
+      margin: 16px 0;
+      text-align: center;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .combo-theme {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 12px 0 8px;
+      text-align: center;
+    }
+
+    .combo-description {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .copy-btn {
+      display: block;
+      width: 100%;
+      margin-top: 16px;
+      padding: 10px;
+      background: var(--accent-gradient);
+      border: none;
+      border-radius: 8px;
+      color: var(--bg-primary);
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 121, 198, 0.4);
+    }
+
+    .copy-btn:active {
+      transform: translateY(0);
+    }
+
+    .copy-btn.copied {
+      background: linear-gradient(135deg, #50C878, #90EE90);
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--text-secondary);
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--border-subtle);
+      border-top-color: var(--accent-pink);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Error */
+    .error {
+      text-align: center;
+      padding: 60px 24px;
+      color: #ff6b6b;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: var(--accent-pink);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* RSS Link */
+    .rss-link {
+      display: inline-block;
+      margin: 24px auto;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .rss-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent-pink);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="back-link">← Back to Home</a>
+    <br><br>
+    <a href="/" class="logo">AyoType</a>
+    <h1>📅 Combo Archive</h1>
+    <p class="subtitle">Browse past Combo of the Day entries. Each combo is carefully curated with a unique theme and tone.</p>
+    <a href="/api/combo-of-the-day/rss" class="rss-link">📡 Subscribe via RSS</a>
+  </header>
+
+  <div class="container">
+    <div id="archive-container">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Loading combo archive...</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 AyoType. All rights reserved.</p>
+    <p style="margin-top: 12px;">
+      <a href="/">Home</a> ·
+      <a href="/contact">Contact</a> ·
+      <a href="https://emojifusion.ayotype.com">EmojiFusion</a>
+    </p>
+  </footer>
+
+  <script>
+    const toneEmojis = {
+      cute: '🐣',
+      cool: '😎',
+      chaotic: '⚡',
+      romantic: '💕',
+      minimal: '◽',
+      nostalgic: '🌙'
+    };
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      });
+    }
+
+    function copyToClipboard(text, button) {
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = button.textContent;
+        button.textContent = '✓ Copied!';
+        button.classList.add('copied');
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Copy failed:', err);
+      });
+    }
+
+    function renderComboCard(combo) {
+      const toneEmoji = toneEmojis[combo.tone] || '✨';
+      const card = document.createElement('div');
+      card.className = 'combo-card';
+
+      card.innerHTML = `
+        <div class="combo-date">${formatDate(combo.date)}</div>
+        <div class="combo-text">${combo.combo}</div>
+        <div class="combo-theme">${combo.theme} ${toneEmoji}</div>
+        <div class="combo-description">${combo.description}</div>
+        <button class="copy-btn" onclick="copyToClipboard('${combo.combo.replace(/'/g, "\\'")}', this)">
+          📋 Copy Combo
+        </button>
+      `;
+
+      return card;
+    }
+
+    async function loadArchive() {
+      const container = document.getElementById('archive-container');
+
+      try {
+        // Generate combos for the last 30 days
+        const today = new Date();
+        const combos = [];
+
+        for (let i = 0; i < 30; i++) {
+          const date = new Date(today);
+          date.setDate(date.getDate() - i);
+          const dateStr = date.toISOString().split('T')[0];
+
+          const response = await fetch(`/api/combo-of-the-day?date=${dateStr}`);
+          if (response.ok) {
+            const combo = await response.json();
+            combos.push(combo);
+          }
+        }
+
+        if (combos.length === 0) {
+          container.innerHTML = '<div class="error">No combos found. Check back later!</div>';
+          return;
+        }
+
+        // Render grid
+        const grid = document.createElement('div');
+        grid.className = 'archive-grid';
+
+        combos.forEach(combo => {
+          grid.appendChild(renderComboCard(combo));
+        });
+
+        container.innerHTML = '';
+        container.appendChild(grid);
+
+      } catch (error) {
+        console.error('Archive loading error:', error);
+        container.innerHTML = '<div class="error">Failed to load archive. Please try again later.</div>';
+      }
+    }
+
+    // Load archive on page load
+    loadArchive();
+  </script>
+
+</body>
+</html>

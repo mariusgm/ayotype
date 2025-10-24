@@ -109,11 +109,28 @@ export default async function handler(req: Request) {
   }
 
   try {
-    // Get today's date in YYYY-MM-DD format (UTC)
-    const today = new Date().toISOString().split('T')[0];
+    // Parse URL to get query parameters
+    const url = new URL(req.url);
+    const dateParam = url.searchParams.get('date');
 
-    // Generate or fetch today's combo
-    const combo = await generateComboForDate(today);
+    // Use provided date or default to today
+    let targetDate: string;
+    if (dateParam) {
+      // Validate date format (YYYY-MM-DD)
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dateParam)) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid date format. Use YYYY-MM-DD' }),
+          { status: 400, headers }
+        );
+      }
+      targetDate = dateParam;
+    } else {
+      // Get today's date in YYYY-MM-DD format (UTC)
+      targetDate = new Date().toISOString().split('T')[0];
+    }
+
+    // Generate or fetch combo for the target date
+    const combo = await generateComboForDate(targetDate);
 
     return new Response(JSON.stringify(combo), {
       status: 200,
