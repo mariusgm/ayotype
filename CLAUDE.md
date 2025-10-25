@@ -297,6 +297,98 @@ Production (Vercel):
 
 ---
 
+## 💰 Google AdSense Integration
+
+**Status**: ✅ Live on production (deployed 2025-10-24)
+**Publisher ID**: ca-pub-9365314553407219
+**Format**: Auto Ads (Google-optimized placements)
+
+### Current Implementation
+
+**Landing Page (ayotype.com):**
+- ✅ **Sidebar Ad**: Desktop only (≥1024px), sticky positioning, Auto Ads format
+- ✅ **In-Feed Ad**: After projects section, responsive (728x90 desktop, 320x100 mobile)
+- ✅ **Auto Ads Enabled**: Google automatically optimizes ad placements site-wide
+- ✅ **Consent Integration**: Ads only load after user grants advertising consent
+
+**EmojiFusion App (emojifusion.ayotype.com):**
+- ✅ AdSense script loaded in HTML
+- ⏳ React ad components pending (can use `shared/ad-manager/` framework)
+
+### Technical Details
+
+**Files Modified:**
+- `apps/landing/index.html` - Added AdSense script + 2 ad containers with responsive layout
+- `apps/emojifusion/index.html` - Added AdSense script (ready for React integration)
+
+**Key Features:**
+- **Consent-Aware Loading**: Checks `ayotype_ad_consent` localStorage before initializing ads
+- **CLS Prevention**: Reserved space with aspect ratios to prevent layout shift
+- **Responsive Design**: Sidebar hides on mobile/tablet (<1024px)
+- **Auto Ads Format**: Using `data-ad-format="auto"` for Google optimization
+- **Accessibility**: "Advertisement" labels, proper ARIA attributes
+
+**Layout Implementation:**
+```css
+/* Two-column grid with sidebar (desktop only) */
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr;  /* Mobile: single column */
+}
+
+@media (min-width: 1024px) {
+  .main-layout {
+    grid-template-columns: 1fr 300px;  /* Desktop: content + sidebar */
+  }
+}
+```
+
+### Ad Performance Monitoring
+
+**AdSense Dashboard**: https://adsense.google.com/u/0/adsense/overview
+
+**Expected Timeline:**
+- ✅ **Now**: AdSense code live, ads.txt verified
+- ⏳ **24-48 hours**: Google crawls site and approves content
+- 📊 **Week 1**: First impressions/clicks appear in dashboard
+- 📈 **Week 2-4**: Revenue optimization as Google learns user behavior
+
+**Key Metrics to Monitor:**
+- **Impressions**: Number of times ads are shown
+- **Clicks**: Number of times ads are clicked
+- **CTR** (Click-Through Rate): Clicks ÷ Impressions (target: >0.5%)
+- **RPM** (Revenue per 1000 impressions): Total earnings ÷ (Impressions ÷ 1000)
+
+### Future Enhancements (Optional)
+
+1. **A/B Testing** (framework already built in `shared/ad-manager/testing/`)
+   - Test sidebar presence vs absence
+   - Test different ad densities
+   - Optimize based on CTR and bounce rate data
+
+2. **EmojiFusion React Integration**
+   - Add `InFeedAd` component after every 10 generated results
+   - Add `AnchorAd` for mobile (dismissible sticky bottom ad)
+   - Use existing components from `shared/ad-manager/containers/`
+
+3. **Advanced Analytics**
+   - Track Core Web Vitals impact (CLS, LCP, FID)
+   - Monitor ad-specific user behavior
+   - Revenue attribution by traffic source
+
+4. **Additional Ad Networks**
+   - Media.net (contextual ads for Yahoo/Bing traffic)
+   - Ezoic (AI-optimized placements, requires 10k+ monthly visitors)
+   - Carbon Ads (developer-focused, good for tech content)
+
+### Documentation
+
+- **Full Architecture**: `AD_ARCHITECTURE.md` - Complete system design and rollout strategy
+- **Integration Guide**: `AD_INTEGRATION_GUIDE.md` - Quick start and implementation examples
+- **Shared Components**: `shared/ad-manager/` - Reusable React components and utilities
+
+---
+
 ### Session Issues Resolved (2025-10-20)
 
 **Issue**: Generation failing on localhost

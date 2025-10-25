@@ -322,28 +322,60 @@ function measureAdCLS(adContainer) {
 
 ## Rollout Strategy
 
-### Phase 1: Foundation (Week 1-2)
-- ✅ ads.txt configured
-- ⏳ Implement consent management
-- ⏳ Create ad container components
-- ⏳ Setup performance monitoring
+### Phase 1: Foundation ✅ COMPLETE (2025-10-24)
+- ✅ ads.txt configured and verified by Google
+- ✅ AdSense script integrated (Auto Ads enabled)
+- ✅ Consent management implemented (respects GDPR via localStorage)
+- ✅ Ad containers created (sidebar + in-feed)
+- ✅ Responsive layout with sticky sidebar (desktop only)
+- ✅ Performance optimizations (CLS prevention with aspect ratios)
+- ✅ Deployed to production (ayotype.com)
 
-### Phase 2: Initial Deployment (Week 3-4)
-- Deploy 1-2 ad units on landing page (A/B test)
-- Monitor CLS, LCP, user engagement
-- Collect baseline metrics
+**Implementation Details:**
+- **Landing Page**: 2 ad placements (sidebar + in-feed) using Auto Ads format
+- **Consent Integration**: Ads only load after user accepts advertising cookies
+- **Format**: Auto Ads (`data-ad-format="auto"`) for Google optimization
+- **Files Modified**: `apps/landing/index.html`, `apps/emojifusion/index.html`
+- **Git Commit**: `4fa1518` - "Integrate Google AdSense with Auto Ads on landing page"
 
-### Phase 3: Optimization (Week 5-8)
-- Test additional placements
-- Optimize ad density
-- Fine-tune lazy loading thresholds
-- A/B test formats (display vs native)
+### Phase 2: Monitoring & Optimization (Current Phase)
+**Timeline**: Weeks 1-4 after deployment (Nov 2025)
 
-### Phase 4: Scale (Week 9+)
-- Expand to EmojiFusion app
-- Add mobile-specific formats
-- Implement advanced targeting
-- Explore premium ad networks
+**Objectives:**
+- Monitor ad performance in AdSense dashboard
+- Collect baseline metrics (impressions, clicks, CTR, RPM)
+- Analyze user engagement impact (bounce rate, time on site)
+- Measure Core Web Vitals (CLS, LCP, FID)
+
+**Success Criteria:**
+- CTR > 0.5% (industry average: 0.35%)
+- RPM > $2 (varies by niche)
+- CLS remains < 0.1
+- Bounce rate increase < 5%
+
+**A/B Testing (Optional):**
+- Test sidebar presence vs absence (50/50 split)
+- Measure impact on bounce rate and time on site
+- Use `shared/ad-manager/testing/ABTestManager.ts`
+
+### Phase 3: Expansion to EmojiFusion (Future)
+**Objectives:**
+- Integrate ad components into React app
+- Add in-results ads (after every 10 generated combos)
+- Add mobile anchor ad (dismissible)
+
+**Implementation Plan:**
+- Use existing components from `shared/ad-manager/containers/`
+- Add `InFeedAd` component to results list
+- Add `AnchorAd` for mobile users
+- Maintain max 2 ad units per page
+
+### Phase 4: Advanced Optimization (Future)
+**Objectives:**
+- Fine-tune ad density based on data
+- Test additional ad formats (native vs display)
+- Explore premium ad networks (Media.net, Ezoic, Carbon Ads)
+- Implement advanced analytics and attribution
 
 ---
 

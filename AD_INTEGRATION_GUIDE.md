@@ -1,8 +1,75 @@
 # Ad Integration Quick Start Guide
 
-## Setup (5 minutes)
+## ✅ Current Implementation (Live on Production)
 
-### 1. Initialize Ad Manager
+**Status**: Google AdSense Auto Ads deployed on landing page (2025-10-24)
+**Publisher ID**: ca-pub-9365314553407219
+**Format**: Auto Ads (Google-optimized placements)
+
+### What's Already Integrated
+
+**Landing Page (`apps/landing/index.html`):**
+- ✅ AdSense script loaded in `<head>`
+- ✅ 2 ad containers: sidebar (desktop) + in-feed (responsive)
+- ✅ Auto Ads format (`data-ad-format="auto"`)
+- ✅ Consent-aware loading (checks `ayotype_ad_consent` localStorage)
+- ✅ Responsive layout with CSS Grid
+
+**EmojiFusion App (`apps/emojifusion/index.html`):**
+- ✅ AdSense script loaded (ready for React component integration)
+
+---
+
+## Quick Start: Adding Ads to New Pages
+
+### Option 1: Auto Ads (Simplest - Already Implemented)
+
+**1. Add AdSense Script to HTML `<head>`:**
+```html
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9365314553407219"
+   crossorigin="anonymous"></script>
+```
+
+**2. Add Ad Container in HTML:**
+```html
+<div class="ad-container">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-9365314553407219"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+</div>
+```
+
+**3. Initialize After Consent:**
+```html
+<script>
+  window.addEventListener('load', function() {
+    // Check if user granted ad consent
+    const consent = localStorage.getItem('ayotype_ad_consent');
+    let hasAdConsent = false;
+
+    try {
+      if (consent) {
+        const prefs = JSON.parse(consent);
+        hasAdConsent = prefs.advertising === true;
+      }
+    } catch (e) {}
+
+    // Only load ads if consent granted
+    if (hasAdConsent) {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  });
+</script>
+```
+
+---
+
+## Advanced Setup: React Components (Optional)
+
+### 1. Initialize Ad Manager (For React Apps)
 
 ```typescript
 // In your app's entry point (e.g., main.tsx, App.tsx)
@@ -261,16 +328,22 @@ consentManager.revokeConsent();
 
 ## Production Checklist
 
-- [ ] Set `testMode: false` in AdManager config
-- [ ] Verify ads.txt is accessible at root domain
-- [ ] Test consent banner on first visit
-- [ ] Check ad visibility on all breakpoints (mobile/tablet/desktop)
-- [ ] Measure Core Web Vitals (CLS < 0.1, LCP < 2.5s)
-- [ ] Verify GDPR compliance (consent required before tracking)
-- [ ] Test ad loading with slow 3G connection
-- [ ] Confirm accessibility with screen reader
-- [ ] Monitor error rates in production logs
-- [ ] Set up A/B tests for optimization
+**Landing Page (ayotype.com):**
+- ✅ Set `testMode: false` in AdManager config (using Auto Ads)
+- ✅ Verify ads.txt is accessible at root domain (https://ayotype.com/ads.txt)
+- ✅ Test consent banner on first visit
+- ✅ Check ad visibility on all breakpoints (mobile/tablet/desktop)
+- ⏳ Measure Core Web Vitals (CLS < 0.1, LCP < 2.5s) - monitor after deployment
+- ✅ Verify GDPR compliance (consent required before tracking)
+- ⏳ Test ad loading with slow 3G connection - pending browser testing
+- ✅ Confirm accessibility with screen reader (ads have "Advertisement" labels)
+- ⏳ Monitor error rates in production logs - check AdSense dashboard
+- ⏳ Set up A/B tests for optimization - framework ready in `shared/ad-manager/testing/`
+
+**EmojiFusion App:**
+- ✅ AdSense script loaded
+- ⏳ React component integration pending
+- ⏳ Add InFeedAd and AnchorAd components
 
 ## Resources
 
