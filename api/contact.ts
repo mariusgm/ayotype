@@ -99,7 +99,7 @@ export default async function handler(req: Request) {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            from: 'AyoType Contact <noreply@ayotype.com>',
+            from: 'AyoType Contact <onboarding@resend.dev>',
             to: [CONTACT_EMAIL],
             reply_to: email,
             subject: `Contact Form: ${name}`,
