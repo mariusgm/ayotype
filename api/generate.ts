@@ -369,7 +369,12 @@ export default async function handler(req: Request) {
 
       // If Gemini fails, fall through to Groq
       if (!resp.ok) {
-        console.log('Gemini API failed, falling back to Groq');
+        const errorText = await resp.text();
+        console.log('Gemini API failed, falling back to Groq:', {
+          status: resp.status,
+          statusText: resp.statusText,
+          error: errorText
+        });
         isGemini = false;
       }
     } catch (error) {
