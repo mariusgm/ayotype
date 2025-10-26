@@ -362,8 +362,7 @@ export default async function handler(req: Request) {
           generationConfig: {
             temperature: 0.85,
             topP: 0.9,
-            maxOutputTokens: 350,
-            stopSequences: ["}"]
+            maxOutputTokens: 350
           }
         })
       });
