@@ -1,17 +1,118 @@
 export const config = { runtime: "edge" };
 
-import { getSeasonalTheme } from '../shared/utils/seasonal-events';
-
-// Get theme based on date using seasonal event detection
+// Seasonal theme detection (inlined for Edge Runtime compatibility)
 function getThemeForDate(dateStr: string): { name: string; tone: string; description: string; words: string } {
   const date = new Date(dateStr + 'T00:00:00Z'); // Parse as UTC
-  const seasonalTheme = getSeasonalTheme(date);
+  const month = date.getUTCMonth() + 1;
+  const day = date.getUTCDate();
+  const year = date.getUTCFullYear();
 
+  // Halloween - October 31
+  if (month === 10 && day === 31) {
+    return {
+      name: 'halloween night',
+      tone: 'chaotic',
+      description: 'Spooky and eerie halloween celebration',
+      words: 'spooky haunted trick-or-treat'
+    };
+  }
+
+  // Christmas - December 20-26
+  if (month === 12 && day >= 20 && day <= 26) {
+    return {
+      name: 'festive holidays',
+      tone: 'cute',
+      description: 'Warm and joyful christmas celebration',
+      words: 'merry christmas festive jolly'
+    };
+  }
+
+  // New Year - December 31 or January 1
+  if ((month === 12 && day === 31) || (month === 1 && day === 1)) {
+    return {
+      name: 'new year celebration',
+      tone: 'chaotic',
+      description: 'Exciting countdown and fresh beginnings',
+      words: 'countdown fireworks celebration new'
+    };
+  }
+
+  // Valentine's Day - February 14
+  if (month === 2 && day === 14) {
+    return {
+      name: 'love and romance',
+      tone: 'romantic',
+      description: 'Sweet and heartfelt valentine celebration',
+      words: 'love hearts romantic sweet'
+    };
+  }
+
+  // Independence Day - July 4
+  if (month === 7 && day === 4) {
+    return {
+      name: 'fireworks celebration',
+      tone: 'chaotic',
+      description: 'Bold and patriotic celebration',
+      words: 'fireworks independence celebration'
+    };
+  }
+
+  // Thanksgiving - November 20-30
+  if (month === 11 && day >= 20 && day <= 30) {
+    return {
+      name: 'grateful harvest',
+      tone: 'nostalgic',
+      description: 'Warm and grateful thanksgiving',
+      words: 'grateful harvest feast'
+    };
+  }
+
+  // Spring - March, April, May
+  if (month >= 3 && month <= 5) {
+    return {
+      name: 'spring blooming',
+      tone: 'cute',
+      description: 'Fresh and blooming spring season',
+      words: 'blooming fresh flowers renewal'
+    };
+  }
+
+  // Summer - June, July, August
+  if (month >= 6 && month <= 8) {
+    return {
+      name: 'summer vibes',
+      tone: 'romantic',
+      description: 'Warm and sunny summer days',
+      words: 'sunny beach vacation warm'
+    };
+  }
+
+  // Fall - September, October, November
+  if (month >= 9 && month <= 11) {
+    return {
+      name: 'autumn cozy',
+      tone: 'nostalgic',
+      description: 'Cozy and colorful fall season',
+      words: 'cozy autumn leaves harvest'
+    };
+  }
+
+  // Winter - December, January, February
+  if (month === 12 || month === 1 || month === 2) {
+    return {
+      name: 'winter wonderland',
+      tone: 'cute',
+      description: 'Cold and magical winter season',
+      words: 'snow cozy frost magical'
+    };
+  }
+
+  // Default fallback
   return {
-    name: seasonalTheme.name,
-    tone: seasonalTheme.tone,
-    description: seasonalTheme.description,
-    words: seasonalTheme.words
+    name: 'daily vibes',
+    tone: 'cool',
+    description: 'Fresh and unique',
+    words: 'creative flow'
   };
 }
 
