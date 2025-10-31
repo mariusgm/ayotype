@@ -1,1 +1,67 @@
-[]
+[
+  {
+    "date": "2025-10-31",
+    "combo": "🎉 trick-or-treat (^_^)",
+    "name": "spooky fun",
+    "theme": "halloween night",
+    "tone": "chaotic",
+    "description": "Spooky and eerie halloween celebration",
+    "all_results": {
+      "emoji": [
+        {
+          "combo": "🎉 trick-or-treat (^_^)",
+          "text": "🎉 trick-or-treat (^_^)",
+          "name": "spooky fun"
+        },
+        {
+          "combo": "haunted house 🤪 (＾▽＾)",
+          "text": "haunted house 🤪 (＾▽＾)",
+          "name": "chaotic nights"
+        },
+        {
+          "combo": "treat time 🎊 (˘︶˘)",
+          "text": "treat time 🎊 (˘︶˘)",
+          "name": "sweet chaos"
+        },
+        {
+          "combo": "spooky vibes 👻 ^^",
+          "text": "spooky vibes 👻 ^^",
+          "name": "dark magic"
+        },
+        {
+          "combo": "trick-or-treat 🎉 :D",
+          "text": "trick-or-treat 🎉 :D",
+          "name": "playful scares"
+        }
+      ],
+      "ascii": [
+        {
+          "combo": "🎉 trick-or-treat (^_^)",
+          "text": "🎉 trick-or-treat (^_^)",
+          "name": "spooky fun"
+        },
+        {
+          "combo": "haunted house 🤪 (＾▽＾)",
+          "text": "haunted house 🤪 (＾▽＾)",
+          "name": "chaotic nights"
+        },
+        {
+          "combo": "treat time 🎊 (˘︶˘)",
+          "text": "treat time 🎊 (˘︶˘)",
+          "name": "sweet chaos"
+        },
+        {
+          "combo": "spooky vibes 👻 ^^",
+          "text": "spooky vibes 👻 ^^",
+          "name": "dark magic"
+        },
+        {
+          "combo": "trick-or-treat 🎉 :D",
+          "text": "trick-or-treat 🎉 :D",
+          "name": "playful scares"
+        }
+      ]
+    },
+    "png_url": "/combo-of-the-day/2025-10-31.png"
+  }
+]
