@@ -6,7 +6,6 @@ function getThemeForDate(dateStr: string): { name: string; tone: string; descrip
   const date = new Date(dateStr + 'T00:00:00Z'); // Parse as UTC
   const month = date.getUTCMonth() + 1;
   const day = date.getUTCDate();
-  const year = date.getUTCFullYear();
 
   // Halloween - October 31
   if (month === 10 && day === 31) {

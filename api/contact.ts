@@ -10,7 +10,7 @@ interface ContactRequest {
 const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET_KEY;
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "support@ayotype.com";
 
-async function verifyRecaptcha(token: string, remoteIP: string): Promise<boolean> {
+async function verifyRecaptcha(token: string): Promise<boolean> {
   if (!RECAPTCHA_SECRET) {
     console.warn('reCAPTCHA not configured - skipping verification');
     return true; // Allow in dev if not configured
@@ -75,10 +75,12 @@ export default async function handler(req: Request) {
       });
     }
 
-    // Verify reCAPTCHA
+    // Get IP for logging
     const ip = req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for') || '0.0.0.0';
+
+    // Verify reCAPTCHA
     if (recaptcha) {
-      const isValid = await verifyRecaptcha(recaptcha, ip);
+      const isValid = await verifyRecaptcha(recaptcha);
       if (!isValid) {
         return new Response(JSON.stringify({ error: 'reCAPTCHA verification failed' }), {
           status: 400,
