@@ -1,30 +1,18 @@
 export const config = { runtime: "edge" };
 
-// Curated themes with descriptions
-const THEMES = [
-  { name: "space vibes", tone: "cool", description: "Cosmic and otherworldly", words: "starlight dreams" },
-  { name: "cozy mornings", tone: "cute", description: "Warm and comforting", words: "coffee cuddles" },
-  { name: "neon dreams", tone: "chaotic", description: "Bold and electrifying", words: "cyber glow" },
-  { name: "pixel art", tone: "nostalgic", description: "Retro and playful", words: "8-bit magic" },
-  { name: "rainy nights", tone: "romantic", description: "Peaceful and serene", words: "storm whispers" },
-  { name: "coffee magic", tone: "cute", description: "Energizing and delightful", words: "brew bliss" },
-  { name: "sunset beach", tone: "romantic", description: "Peaceful and serene", words: "golden waves" },
-  { name: "cyber punk", tone: "cool", description: "Futuristic and edgy", words: "neon city" },
-  { name: "forest mystical", tone: "nostalgic", description: "Enchanting and earthy", words: "woodland dreams" },
-  { name: "party lights", tone: "chaotic", description: "Vibrant and energetic", words: "dance fever" },
-  { name: "zen garden", tone: "minimal", description: "Calm and balanced", words: "peaceful flow" },
-  { name: "starry wishes", tone: "romantic", description: "Dreamy and hopeful", words: "moonlit magic" },
-  { name: "retro arcade", tone: "nostalgic", description: "Fun and colorful", words: "game on" },
-  { name: "neon cats", tone: "chaotic", description: "Quirky and fun", words: "meow mayhem" },
-  { name: "moonlight dance", tone: "romantic", description: "Elegant and ethereal", words: "lunar glow" }
-];
+import { getSeasonalTheme } from '../shared/utils/seasonal-events';
 
-// Deterministic theme selection based on date
-function getThemeForDate(dateStr: string): typeof THEMES[0] {
-  const hash = dateStr.split('').reduce((acc, char) => {
-    return acc + char.charCodeAt(0);
-  }, 0);
-  return THEMES[hash % THEMES.length];
+// Get theme based on date using seasonal event detection
+function getThemeForDate(dateStr: string): { name: string; tone: string; description: string; words: string } {
+  const date = new Date(dateStr + 'T00:00:00Z'); // Parse as UTC
+  const seasonalTheme = getSeasonalTheme(date);
+
+  return {
+    name: seasonalTheme.name,
+    tone: seasonalTheme.tone,
+    description: seasonalTheme.description,
+    words: seasonalTheme.words
+  };
 }
 
 // Generate combo for a specific date
