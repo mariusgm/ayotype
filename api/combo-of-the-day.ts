@@ -1,6 +1,7 @@
 export const config = { runtime: "edge" };
 
 // Seasonal theme detection (inlined for Edge Runtime compatibility)
+// Updated: Force Vercel Edge Function cache refresh
 function getThemeForDate(dateStr: string): { name: string; tone: string; description: string; words: string } {
   const date = new Date(dateStr + 'T00:00:00Z'); // Parse as UTC
   const month = date.getUTCMonth() + 1;
